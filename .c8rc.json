@@ -1,0 +1,5 @@
+{
+	"src": "./",
+	"exclude": ["docs", "test", "playground"],
+	"all": true
+}

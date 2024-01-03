@@ -1,0 +1,83 @@
+{
+	"source": "./lib",
+	"destination": "./docs/internal",
+	"index": "README.md",
+	"package": "./package.json",
+	"packageScopePrefix": "",
+	"plugins": [
+		{ 
+			"name": "@enterthenamehere/esdoc-standard-plugin" 
+		},
+		{ 
+			"name": "@enterthenamehere/esdoc-external-nodejs-plugin", 
+			"option": { 
+				"enable": true 
+			}
+		},
+		{
+			"name": "@enterthenamehere/esdoc-importpath-plugin",
+			"option": {
+				"stripPackageName": false,
+				"replaces": [
+					{ "from": "^lib/utils/.*\\.js$", "to": "" },
+					{ "from": "^lib/errors/.*\\.js$", "to": "errors" },
+					{ "from": "^lib/express/.*\\.js$", "to": "express" },
+					{ "from": "^lib/koa/.*\\.js$", "to": "koa" },
+					{ "from": "^lib/ws/.*\\.js$", "to": "ws" },
+					{ "from": "^lib/sse/.*\\.js$", "to": "sse" },
+					{ "from": "^lib/[^/]*\\.js$", "to": "" }
+				]
+			}
+		},
+		{
+			"name": "@enterthenamehere/esdoc-accessor-plugin",
+			"option": {
+				"access": [
+					"public",
+					"protected",
+					"private"
+				],
+				"autoPrivate": true
+			}
+		},
+		{
+			"name": "@enterthenamehere/esdoc-external-nodejs-plugin", 
+			"option": { 
+				"enable": true 
+			}
+		},
+		{
+			"name": "@vividvisions/esdoc-api-doc-markdown-plugin",
+			"option": {
+				"filename": "API.md",
+				"order": {
+					"node-turbo": [
+						"TurboFrame",
+						"TurboStream",
+						"TurboStreamElement",
+						"TurboElement",
+						"TurboReadable"
+					],
+					"node-turbo/ws": [
+						"WsTurboStream"
+					],
+					"node-turbo/koa": [
+						"KoaTurboStream"
+					],
+					"node-turbo/express": [
+						"ExpressTurboStream"
+					],
+					"node-turbo/sse": [
+						"SseTurboStream"
+					],
+					"node-turbo/errors": [
+						"ValidationError",
+						"AttributeMalformedError",
+						"AttributeMissingError",
+						"AttributeInvalidError"
+					]
+				}
+			}
+		}
+	]
+}
