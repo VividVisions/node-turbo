@@ -56,7 +56,7 @@ node-turbo has been tested with:
 | [ws](https://github.com/websockets/ws) | 8.15.1 |
 
 ## API docs
-See [`/docs/API.md`](./doc/API.md) for a documentation of all node-turbo classes and functions.
+See [`/docs/API.md`](./docs/API.md) for a documentation of all node-turbo classes and functions.
 
 ## Usage
 
