@@ -67,10 +67,10 @@ See [`/docs/API.md`](./docs/API.md) for a documentation of all node-turbo classe
 import { TurboStream } from 'node-turbo';
 
 const ts = new TurboStream({ 
-		action: 'append', 
-		target: 'target-id' 
-	}, 
-	'<p>My content</p>');
+    action: 'append', 
+    target: 'target-id' 
+  }, 
+  '<p>My content</p>');
 
 const html = ts.render();
 ```
@@ -79,9 +79,9 @@ This will render the following HTML fragment:
 
 ```html
 <turbo-stream action="append" target="target-id">
-	<template>
-		<p>My content</p>
-	</template>
+  <template>
+    <p>My content</p>
+  </template>
 </turbo-stream>
 ```
 
@@ -91,9 +91,9 @@ For all [supported actions](https://turbo.hotwired.dev/handbook/streams#stream-m
 import { TurboStream } from 'node-turbo';
 
 const ts = new TurboStream()
-	.append('target-id', '<p>My content</p>')
-	.replace('target-id-2', '<p>New content</p>')
-	.remove('target-id-3');
+  .append('target-id', '<p>My content</p>')
+  .replace('target-id-2', '<p>New content</p>')
+  .remove('target-id-3');
 const html = ts.render();
 ```
 
@@ -101,17 +101,17 @@ Result:
 
 ```html
 <turbo-stream action="append" target="target-id">
-	<template>
-		<p>My content</p>
-	</template>
+  <template>
+    <p>My content</p>
+  </template>
 </turbo-stream>
 <turbo-stream action="replace" target="target-id-2">
-	<template>
-		<p>New content</p>
-	</template>
+  <template>
+    <p>New content</p>
+  </template>
 </turbo-stream>
 <turbo-stream action="remove" target="target-id-3">
-	<!-- <template> and content are omitted -->
+  <!-- <template> and content are omitted -->
 </turbo-stream>
 ```
 
@@ -122,16 +122,16 @@ If you want to [target multiple elements](https://turbo.hotwired.dev/handbook/st
 import { TurboStream } from 'node-turbo';
 
 let ts = new TurboStream()
-	.appendAll('.my-targets', '<p>My content</p>');
+  .appendAll('.my-targets', '<p>My content</p>');
 ```
 
 Result:
 
 ```html
 <turbo-stream action="append" targets=".my-targets">
-	<template>
-		<p>My content</p>
-	</template>
+  <template>
+    <p>My content</p>
+  </template>
 </turbo-stream>
 ```
 
@@ -141,7 +141,7 @@ If you want to use [custom actions](https://turbo.hotwired.dev/handbook/streams#
 import { TurboStream } from 'node-turbo';
 
 let ts = new TurboStream()
-	.custom('custom-action', 'target-id', '<p>My content</p>');
+  .custom('custom-action', 'target-id', '<p>My content</p>');
 ```
 
 ##### Using the Node.js streams API
@@ -171,7 +171,7 @@ This will render the following HTML fragment:
 
 ```html
 <turbo-frame id="my-id">
-	<p>My content</p>
+  <p>My content</p>
 </turbo-stream>
 ``` 
 
@@ -230,47 +230,47 @@ const app = new Koa();
 turbochargeKoa(app);
 
 app.use(async (ctx, next) => {
-	if (ctx.path !== '/turbo-frame') {
-		return await next();
-	}
+  if (ctx.path !== '/turbo-frame') {
+    return await next();
+  }
 
-	if (ctx.isTurboFrameRequest()) {
-		// Automatically retrieves the Turbo Frame ID from the header
-		// and uses it for the response. 
-		ctx.turboFrame('<p>New content</p>');
-		//You can set it manually with:
-		// ctx.turboFrame('turbo-frame-id', <p>New content</p>');
-	}
-	else {
-		ctx.redirect('/path/to/other/page');
-	}
+  if (ctx.isTurboFrameRequest()) {
+    // Automatically retrieves the Turbo Frame ID from the header
+    // and uses it for the response. 
+    ctx.turboFrame('<p>New content</p>');
+    //You can set it manually with:
+    // ctx.turboFrame('turbo-frame-id', <p>New content</p>');
+  }
+  else {
+    ctx.redirect('/path/to/other/page');
+  }
 });
 
 app.use(async (ctx, next) => {
-	if (ctx.path !== '/turbo-stream') {
-		return await next();
-	}
+  if (ctx.path !== '/turbo-stream') {
+    return await next();
+  }
 
-	if (ctx.isTurboStreamRequest()) {
-		ctx.turboStream() 
-			.append('target-id', '<p>New content</p>');
-	}
-	else {
-		ctx.redirect('/path/to/other/page');
-	}
+  if (ctx.isTurboStreamRequest()) {
+    ctx.turboStream() 
+      .append('target-id', '<p>New content</p>');
+  }
+  else {
+    ctx.redirect('/path/to/other/page');
+  }
 });
 
 app.use(async (ctx, next) => {
-	if (ctx.path !== '/sse') {
-		return await next();
-	}
+  if (ctx.path !== '/sse') {
+    return await next();
+  }
 
-	const ssets = ctx.sseTurboStream();
+  const ssets = ctx.sseTurboStream();
 
-	// These get automatically piped to ctx.res in SSE format.
-	ssets
-		.append('target-id', '<p>My content</p>')
-		.updateAll('.targets', '<p>My other content</p>');
+  // These get automatically piped to ctx.res in SSE format.
+  ssets
+    .append('target-id', '<p>My content</p>')
+    .updateAll('.targets', '<p>My other content</p>');
 }); 
 
 app.listen(8080);
@@ -308,18 +308,18 @@ const app = express();
 turbochargeExpress(app);
 
 app.get('/', (req, res) => {
-	if (req.isTurboFrameRequest()) {
-		res.turboFrame('<p>My content</p>');	
-	}
-	else if (req.isTurboStreamRequest()) {
-		res.turboStream()
-			.append('target-id', '<p>My content</p>')
-			.remove('taget-id-2')
-			.send();
-	}
-	else {
-		res.status(501).end();
-	}
+  if (req.isTurboFrameRequest()) {
+    res.turboFrame('<p>My content</p>');  
+  }
+  else if (req.isTurboStreamRequest()) {
+    res.turboStream()
+      .append('target-id', '<p>My content</p>')
+      .remove('taget-id-2')
+      .send();
+  }
+  else {
+    res.status(501).end();
+  }
 });
 
 app.listen(8080, () => {
@@ -338,11 +338,11 @@ import { WebSocketServer } from 'ws';
 const wss = new WebSocketServer({ port: 8080 });
 
 wss.on('connection', webSocket => {
-	// The Turbo Stream messages get sent immediately.
-	WsTurboStream
-		.use(webSocket)
-		.append('id1', 'c1')
-		.update('id2', 'c2');
+  // The Turbo Stream messages get sent immediately.
+  WsTurboStream
+    .use(webSocket)
+    .append('id1', 'c1')
+    .update('id2', 'c2');
 });
 ```
 
@@ -355,15 +355,15 @@ import { WebSocketServer, createWebSocketStream } from 'ws';
 const wss = new WebSocketServer({ port: 8080 });
 
 wss.on('connection', function connection(ws) {
-	const ts = new TurboStream();
-	const readable = ts.createReadableStream();
-	const wsStream = createWebSocketStream(ws, { encoding: 'utf8' });
-	readable.pipe(wsStream);
+  const ts = new TurboStream();
+  const readable = ts.createReadableStream();
+  const wsStream = createWebSocketStream(ws, { encoding: 'utf8' });
+  readable.pipe(wsStream);
 
-	ts
-		.append('target-id', '<p>My content</p>')
-		.update('target-id-2', '<p>Updated content</p>')
-		.remove('target-id-2');
+  ts
+    .append('target-id', '<p>My content</p>')
+    .update('target-id-2', '<p>Updated content</p>')
+    .remove('target-id-2');
 });
 ```
 
@@ -382,82 +382,82 @@ config.sseUrl = `${config.baseUrl}/sse`;
 
 const httpServer = http.createServer((req, res) => {
 
-	// SSE endpoint
-	if (req.url === '/sse') {
-	
-		res.writeHead(200, {
-			'Content-Type': 'text/event-stream',
-			'Cache-Control': 'no-cache',
-			...(req.httpVersionMajor === 1 && { 'Connection': 'keep-alive' })
-		});
+  // SSE endpoint
+  if (req.url === '/sse') {
+  
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      ...(req.httpVersionMajor === 1 && { 'Connection': 'keep-alive' })
+    });
 
-		// Turbo listens to nameless events and 'message' events.
-		const ssets = new SseTurboStream('message');
-		
-		// Timeout is only here for us to have time to observe.
-		setTimeout(() => {	
-			ssets.append('stream1', '<p>My content</p>')
-				.append('stream2', '<p>My content 2</p>')
-				.append('stream3', '<p>\n<span>My multiline content 3</span>\n</p>');
-				
-			res.write(ssets.flush());
-		}, 1000);
+    // Turbo listens to nameless events and 'message' events.
+    const ssets = new SseTurboStream('message');
+    
+    // Timeout is only here for us to have time to observe.
+    setTimeout(() => {  
+      ssets.append('stream1', '<p>My content</p>')
+        .append('stream2', '<p>My content 2</p>')
+        .append('stream3', '<p>\n<span>My multiline content 3</span>\n</p>');
+        
+      res.write(ssets.flush());
+    }, 1000);
 
-		// You can also use the streams API.
-		setTimeout(() => {		
-			const stream = ssets.createReadableStream();
-			stream.pipe(res);	
-			ssets.prependAll('.stream', '<p>Prepend!</p>');
-		}, 2000);
+    // You can also use the streams API.
+    setTimeout(() => {    
+      const stream = ssets.createReadableStream();
+      stream.pipe(res); 
+      ssets.prependAll('.stream', '<p>Prepend!</p>');
+    }, 2000);
 
-		return;
-	}
+    return;
+  }
 
-	// Client
-	res.end(`<!DOCTYPE html>
+  // Client
+  res.end(`<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>SSE Test</title>
-		<style>
-		.b {
-			border: 1px dashed #cccc;
-			margin-bottom: 10px;
-			padding: 10px;
-		}
-		</style>
-		<script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.0-beta.2/dist/turbo.es2017-esm.js"></script>
-		<script>
-			var eventSource = new EventSource('/sse');
-			eventSource.onmessage = function(event) {
-				document.getElementById('log').innerText += event.data + '\\n\\n';
-			};
-		</script>
-	</head>
-	<body>
-		<turbo-stream-source src="${ config.sseUrl }">
-		<h1>SSE Test</h1>
-		<h2>Control</h2>
-		<pre class="b" id="log"></pre>
-		<h2>stream1</h2>
-		<div class="b stream" id="stream1"></div> 
-		<h2>stream2</h2>
-		<div class="b stream" id="stream2"></div> 
-		<h2>stream3</h2>
-		<div class="b stream" id="stream3"></div> 
-	</body>
+  <head>
+    <meta charset="utf-8">
+    <title>SSE Test</title>
+    <style>
+    .b {
+      border: 1px dashed #cccc;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+    </style>
+    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.0-beta.2/dist/turbo.es2017-esm.js"></script>
+    <script>
+      var eventSource = new EventSource('/sse');
+      eventSource.onmessage = function(event) {
+        document.getElementById('log').innerText += event.data + '\\n\\n';
+      };
+    </script>
+  </head>
+  <body>
+    <turbo-stream-source src="${ config.sseUrl }">
+    <h1>SSE Test</h1>
+    <h2>Control</h2>
+    <pre class="b" id="log"></pre>
+    <h2>stream1</h2>
+    <div class="b stream" id="stream1"></div> 
+    <h2>stream2</h2>
+    <div class="b stream" id="stream2"></div> 
+    <h2>stream3</h2>
+    <div class="b stream" id="stream3"></div> 
+  </body>
 </html>`);
 });
 
 httpServer.listen(config.port);
 
 httpServer.on('error', (err) => {
-	console.log(err);
-	process.exit(1);
+  console.log(err);
+  process.exit(1);
 });
 
 httpServer.on('listening', () => {
-	console.log(`HTTP server listening on port ${config.port}…`);
+  console.log(`HTTP server listening on port ${config.port}…`);
 });
 ```
 
@@ -479,60 +479,60 @@ const app = new Koa();
 turbochargeKoa(app);
 
 app.use(async (ctx, next) => {
-	if (ctx.path !== '/sse') {
-		return await next();
-	}
+  if (ctx.path !== '/sse') {
+    return await next();
+  }
 
-	// Use convenience function to configure Koa.
-	// Returns SseTurboStream instance which directly streams to res.
-	const ssets = ctx.sseTurboStream();
+  // Use convenience function to configure Koa.
+  // Returns SseTurboStream instance which directly streams to res.
+  const ssets = ctx.sseTurboStream();
 
-	// Timeout is only here for us to have time to observe.
-	setTimeout(() => {
-		ssets
-			.append('stream1', '<p>My content <strong>1</strong></p>')
-			.append('stream2', '<p>My content <strong>2</strong></p>')
-			.append('stream3', '<p>My content <strong>3</strong></p>');
-	}, 1000);
+  // Timeout is only here for us to have time to observe.
+  setTimeout(() => {
+    ssets
+      .append('stream1', '<p>My content <strong>1</strong></p>')
+      .append('stream2', '<p>My content <strong>2</strong></p>')
+      .append('stream3', '<p>My content <strong>3</strong></p>');
+  }, 1000);
 
-	setTimeout(() => {
-		ssets.prependAll('.stream', '<p>Prepend all</p>');
-	}, 2000);
+  setTimeout(() => {
+    ssets.prependAll('.stream', '<p>Prepend all</p>');
+  }, 2000);
 });
 
 app.use(async (ctx, next) => {
-	ctx.body = `<!DOCTYPE html>
+  ctx.body = `<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>SSE Test</title>
-		<style>
-		.b {
-			border: 1px dashed #cccc;
-			margin-bottom: 10px;
-			padding: 10px;
-		}
-		</style>
-		<script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.0-beta.2/dist/turbo.es2017-esm.js"></script>
-		<script>
-			var eventSource = new EventSource('/sse');
-			eventSource.onmessage = function(event) {
-				document.getElementById('log').innerText += event.data + '\\n\\n';
-			};
-		</script>
-	</head>
-	<body>
-		<turbo-stream-source src="${ config.sseUrl }">
-		<h1>SSE Test</h1>
-		<h2>Control</h2>
-		<pre class="b" id="log"></pre>
-		<h2>stream1</h2>
-		<div class="b stream" id="stream1"></div> 
-		<h2>stream2</h2>
-		<div class="b stream" id="stream2"></div> 
-		<h2>stream3</h2>
-		<div class="b stream" id="stream3"></div> 
-	</body>
+  <head>
+    <meta charset="utf-8">
+    <title>SSE Test</title>
+    <style>
+    .b {
+      border: 1px dashed #cccc;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+    </style>
+    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.0-beta.2/dist/turbo.es2017-esm.js"></script>
+    <script>
+      var eventSource = new EventSource('/sse');
+      eventSource.onmessage = function(event) {
+        document.getElementById('log').innerText += event.data + '\\n\\n';
+      };
+    </script>
+  </head>
+  <body>
+    <turbo-stream-source src="${ config.sseUrl }">
+    <h1>SSE Test</h1>
+    <h2>Control</h2>
+    <pre class="b" id="log"></pre>
+    <h2>stream1</h2>
+    <div class="b stream" id="stream1"></div> 
+    <h2>stream2</h2>
+    <div class="b stream" id="stream2"></div> 
+    <h2>stream3</h2>
+    <div class="b stream" id="stream3"></div> 
+  </body>
 </html>`;
 });
 
@@ -559,57 +559,57 @@ turbochargeExpress(app);
 // SSE endpoint
 app.get('/sse', async (req, res) => {
 
-	// Use convenience function to configure Express.
-	// Returns SseTurboStream instance which directly streams to res.
-	const ssets = res.sseTurboStream();
+  // Use convenience function to configure Express.
+  // Returns SseTurboStream instance which directly streams to res.
+  const ssets = res.sseTurboStream();
 
-	// Timeout is only here for us to have time to observe.
-	setTimeout(() => {
-		ssets
-			.append('stream1', '<p>My content <strong>1</strong></p>')
-			.append('stream2', '<p>My content <strong>2</strong></p>')
-			.append('stream3', '<p>My content <strong>3</strong></p>');
-	}, 1000);
+  // Timeout is only here for us to have time to observe.
+  setTimeout(() => {
+    ssets
+      .append('stream1', '<p>My content <strong>1</strong></p>')
+      .append('stream2', '<p>My content <strong>2</strong></p>')
+      .append('stream3', '<p>My content <strong>3</strong></p>');
+  }, 1000);
 
-	setTimeout(() => {
-		ssets.prependAll('.stream', '<p>Prepend all</p>');
-	}, 2000);
+  setTimeout(() => {
+    ssets.prependAll('.stream', '<p>Prepend all</p>');
+  }, 2000);
 });
 
 // Client
 app.get('/', async (req, res) => {
-	res.send(`<!DOCTYPE html>
+  res.send(`<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>SSE Test</title>
-		<style>
-		.b {
-			border: 1px dashed #cccc;
-			margin-bottom: 10px;
-			padding: 10px;
-		}
-		</style>
-		<script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.0-beta.2/dist/turbo.es2017-esm.js"></script>
-		<script>
-			var eventSource = new EventSource('/sse');
-			eventSource.onmessage = function(event) {
-				document.getElementById('log').innerText += event.data + '\\n\\n';
-			};
-		</script>
-	</head>
-	<body>
-		<turbo-stream-source src="${ config.sseUrl }">
-		<h1>SSE Test</h1>
-		<h2>Control</h2>
-		<pre class="b" id="log"></pre>
-		<h2>stream1</h2>
-		<div class="b stream" id="stream1"></div> 
-		<h2>stream2</h2>
-		<div class="b stream" id="stream2"></div> 
-		<h2>stream3</h2>
-		<div class="b stream" id="stream3"></div> 
-	</body>
+  <head>
+    <meta charset="utf-8">
+    <title>SSE Test</title>
+    <style>
+    .b {
+      border: 1px dashed #cccc;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+    </style>
+    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.0-beta.2/dist/turbo.es2017-esm.js"></script>
+    <script>
+      var eventSource = new EventSource('/sse');
+      eventSource.onmessage = function(event) {
+        document.getElementById('log').innerText += event.data + '\\n\\n';
+      };
+    </script>
+  </head>
+  <body>
+    <turbo-stream-source src="${ config.sseUrl }">
+    <h1>SSE Test</h1>
+    <h2>Control</h2>
+    <pre class="b" id="log"></pre>
+    <h2>stream1</h2>
+    <div class="b stream" id="stream1"></div> 
+    <h2>stream2</h2>
+    <div class="b stream" id="stream2"></div> 
+    <h2>stream3</h2>
+    <div class="b stream" id="stream3"></div> 
+  </body>
 </html>`)
 });
 
