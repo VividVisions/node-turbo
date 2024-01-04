@@ -2,7 +2,7 @@
 	"name": "node-turbo",
 	"version": "1.0.0",
 	"description": "A library for Node.js to assist with the server side of 37signals' Hotwire Turbo framework. It provides classes and functions for Web servers and also convenience functions for the frameworks Koa and Express as well as for WebSocket and SSE.",
-	"keywords": ["turbo", "hotwire", "hotwired", "server", "http", "koa", "express", "sse", "websocket", "ws"],
+	"keywords": ["node", "turbo", "nodejs", "hotwire", "hotwired", "server", "http", "koa", "express", "sse", "websocket", "ws"],
 	"homepage": "https://github.com/VividVisions/node-turbo",
 	"bugs": "https://github.com/VividVisions/node-turbo/issues",
 	"repository": {
