@@ -50,7 +50,7 @@ node-turbo has been tested with:
 | Name | Version(s) |
 | :--- | :--- |
 | [Node.js](https://nodejs.org/) | 16.6  — 18.16.0 |
-| [Hotwired Turbo](https://turbo.hotwired.dev/) | 7.3.0 — 8.0.0-beta.2 |
+| [Hotwire Turbo](https://turbo.hotwired.dev/) | 7.3.0 — 8.0.0-beta.2 |
 | [Koa](https://koajs.com/) | 2.14.2 |
 | [Express](https://expressjs.com/) | 4.18.2 |
 | [ws](https://github.com/websockets/ws) | 8.15.1 |
