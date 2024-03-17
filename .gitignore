@@ -3,3 +3,4 @@
 /coverage
 /docs/internal
 /package-lock.json
+/test/coverage
