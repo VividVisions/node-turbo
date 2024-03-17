@@ -43,32 +43,33 @@
 		"postdocs": "cp -f ./docs/internal/API.md ./docs"
 	},
 	"dependencies": {
+		"debug": "^4.3.4",
 		"is-plain-object": "^5.0.0",
-		"negotiator": "^0.6.3",
-		"debug": "^4.3.4"
+		"negotiator": "^0.6.3"
 	},
 	"devDependencies": {
 		"@enterthenamehere/esdoc": "^2.6.0-dev.1",
 		"@enterthenamehere/esdoc-external-nodejs-plugin": "^2.6.0-dev.1",
 		"@enterthenamehere/esdoc-importpath-plugin": "^2.6.0-dev.1",
 		"@enterthenamehere/esdoc-standard-plugin": "^2.6.0-dev.2",
+		"@hotwired/turbo": "^8.0.4",
+		"@playwright/test": "^1.42.1",
 		"@vividvisions/esdoc-api-doc-markdown-plugin": "file:../esdoc-api-doc-markdown-plugin",
-		"@hotwired/turbo": "^8.0.0-beta.1",
-		"c8": "^8.0.1",
-		"chai": "^4.3.10",
+		"c8": "^9.1.0",
+		"chai": "^4.1.1",
 		"chai-eventemitter2": "^0.2.1",
 		"chai-spies": "^1.1.0",
 		"colorette": "^2.0.20",
 		"eventsource": "^2.0.2",
-		"express": "^4.18.2",
+		"express": "^4.18.3",
 		"git-repo-info": "^2.1.1",
-		"koa": "^2.14.2",
-		"koa-route": "^3.2.0",
+		"koa": "^2.15.0",
+		"koa-route": "^4.0.1",
 		"koa-static": "^5.0.0",
-		"mocha": "^10.2.0",
-		"node-mocks-http": "^1.14.0",
+		"mocha": "^10.3.0",
+		"node-mocks-http": "^1.14.1",
 		"nunjucks": "^3.2.4",
-		"supertest": "^6.3.3",
-		"ws": "^8.15.1"
+		"supertest": "^6.3.4",
+		"ws": "^8.16.0"
 	}
 }
