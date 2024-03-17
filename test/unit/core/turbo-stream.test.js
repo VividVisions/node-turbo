@@ -252,6 +252,15 @@ describe('TurboStream', function() {
 
 
 		TurboStream.ACTIONS.forEach(action => {
+			if (action === 'refresh') {
+				it ('refresh() correctly omits <template> and content', function() {
+					const ts = new TurboStream({ action: 'refresh' });
+					
+					expect(ts.render()).to.equal('<turbo-stream action="refresh"></turbo-stream>');
+				});
+				return;
+			}
+
 			it (`${action}() adds TurboElement with action \'${action}\'`, function() {
 				const ts = new TurboStream();
 				ts[action].call(ts, { target: 't' }, 'c');
@@ -278,6 +287,28 @@ describe('TurboStream', function() {
 			});	
 		});
 
+
+		it ('refresh() adds TurboElement with action \'refresh\'', function() {
+			const ts = new TurboStream();
+			ts.refresh();
+
+			expect(ts.elements[0] instanceof TurboElement).to.be.true;
+			expect(ts.elements[0].attributes.action).to.equal('refresh');
+		});
+
+		it ('refresh(<string>) adds attribute \'request-id\'', function() {
+			const ts = new TurboStream();
+			ts.refresh('id');
+			expect(ts.elements[0].attributes).to.have.property('request-id');
+			expect(ts.elements[0].attributes['request-id']).to.equal('id');
+		});
+
+		it ('refresh(<object>) adds attributes', function() {
+			const ts = new TurboStream();
+			ts.refresh({ foo: 'bar' });
+			expect(ts.elements[0].attributes).to.have.property('foo');
+			expect(ts.elements[0].attributes.foo).to.equal('bar');
+		});
 	});
 
 	

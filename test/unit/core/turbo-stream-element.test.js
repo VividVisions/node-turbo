@@ -73,4 +73,11 @@ describe('TurboStreamElement', function() {
 
 	});
 
+	
+	it(`No error is thrown when action is "refresh" with missing attribute "target" or "targets"`, function() {		
+		expect(function() {
+			const tse = new TurboStreamElement({ action: 'refresh' });	
+		}).to.not.throw();
+	});	
+
 });
