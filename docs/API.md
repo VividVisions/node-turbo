@@ -1,6 +1,6 @@
 # node-turbo API documentation
 
-Version 1.0.0
+Version 1.1.0
 
 ## Table of Contents
 
@@ -26,7 +26,24 @@ Version 1.0.0
       - [turbostream.flush()](#turbostreamflush)
       - [turbostream.custom(action, target, content)](#turbostreamcustomaction-target-content)
       - [turbostream.customAll(action, targets, content)](#turbostreamcustomallaction-targets-content)
-      - [turbostream.createReadableStream(opts[, streamOptions])](#turbostreamcreatereadablestreamopts-streamoptions)
+      - [turbostream.createReadableStream(opts, opts.continuous, streamOptions)](#turbostreamcreatereadablestreamopts-optscontinuous-streamoptions)
+      - [turbostream.append(targetOrAttributes, content)](#turbostreamappendtargetorattributes-content)
+      - [turbostream.appendAll(targetsOrAttributes, content)](#turbostreamappendalltargetsorattributes-content)
+      - [turbostream.prepend(targetOrAttributes, content)](#turbostreamprependtargetorattributes-content)
+      - [turbostream.prependAll(targetsOrAttributes, content)](#turbostreamprependalltargetsorattributes-content)
+      - [turbostream.replace(targetOrAttributes, content)](#turbostreamreplacetargetorattributes-content)
+      - [turbostream.replaceAll(targetsOrAttributes, content)](#turbostreamreplacealltargetsorattributes-content)
+      - [turbostream.update(targetOrAttributes, content)](#turbostreamupdatetargetorattributes-content)
+      - [turbostream.updateAll(targetsOrAttributes, content)](#turbostreamupdatealltargetsorattributes-content)
+      - [turbostream.remove(targetOrAttributes)](#turbostreamremovetargetorattributes)
+      - [turbostream.removeAll(targetsOrAttributes)](#turbostreamremovealltargetsorattributes)
+      - [turbostream.before(targetOrAttributes, content)](#turbostreambeforetargetorattributes-content)
+      - [turbostream.beforeAll(targetsOrAttributes, content)](#turbostreambeforealltargetsorattributes-content)
+      - [turbostream.after(targetOrAttributes, content)](#turbostreamaftertargetorattributes-content)
+      - [turbostream.afterAll(targetsOrAttributes, content)](#turbostreamafteralltargetsorattributes-content)
+      - [turbostream.morph(targetOrAttributes, content)](#turbostreammorphtargetorattributes-content)
+      - [turbostream.morphAll(targetsOrAttributes, content)](#turbostreammorphalltargetsorattributes-content)
+      - [turbostream.refresh(requestIdOrAttributes)](#turbostreamrefreshrequestidorattributes)
    - [Class: TurboStreamElement](#class-turbostreamelement)
       - [turbostreamelement.validate()](#turbostreamelementvalidate)
       - [turbostreamelement.render()](#turbostreamelementrender)
@@ -61,7 +78,6 @@ Version 1.0.0
    - [Class: KoaTurboStream](#class-koaturbostream)
       - [new KoaTurboStream(koaCtx)](#new-koaturbostreamkoactx)
       - [koaturbostream.koaCtx](#koaturbostreamkoactx)
-      - [koaturbostream.status](#koaturbostreamstatus)
    - [turbochargeKoa(koaApp, opts, opts.autoRender)](#turbochargekoakoaapp-opts-optsautorender)
 - [node-turbo/express](#node-turboexpress)
    - [Class: ExpressTurboStream](#class-expressturbostream)
@@ -138,6 +154,8 @@ The HTML content.
 Converts the attributes object to a string in the form
 of HTML attributes ({ name: value } -&#62; 'name="value"').
 
+***
+
 ### Class: TurboStream
 
 ```javascript
@@ -145,7 +163,7 @@ import { TurboStream } from 'node-turbo';
 ```
 
 ***Extends:***  
-- events~EventEmitter  
+- node:events~EventEmitter  
 
 A Turbo Stream message.
 
@@ -161,7 +179,7 @@ See [https://turbo.hotwired.dev/handbook/streams#streaming-from-http-responses](
 
 `static` {Array}
 
-List of all supported actions: 'append', 'prepend', 'replace', 'update', 'remove', 'before' and 'after'.
+List of all supported official actions: `append`, `prepend`, `replace`, `update`, `remove`, `before`, `after` and `refresh`.
 
 See [https://turbo.hotwired.dev/handbook/streams#stream-messages-and-actions](https://turbo.hotwired.dev/handbook/streams#stream-messages-and-actions)  
 
@@ -253,12 +271,184 @@ Adds a Turbo Stream Element with a custom action, targeting multiple DOM element
 
 Returns: {TurboStream} The instance for chaining.
 
-#### turbostream.createReadableStream(opts[, streamOptions])
+#### turbostream.createReadableStream(opts, opts.continuous, streamOptions)
 
-- `opts` {*} 
-- `streamOptions` {{}} 
+- `opts` {Object<String, String>} The options for stream creation.
+- `opts.continuous` {Boolean} If true, a TurboReadable instance is returned. 
+ If false, a readable stream created from the buffered items is returned.
+- `streamOptions` {Object<String, String>} The options for the readable stream itself.
 
-Returns: {*} 
+Creates a readable stream.
+
+Returns: {stream.Readable | TurboReadable} Either a readable stream or a TurboReadable instance.
+
+#### turbostream.append(targetOrAttributes, content)
+
+
+- `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `append` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.appendAll(targetsOrAttributes, content)
+
+
+- `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `append` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.prepend(targetOrAttributes, content)
+
+
+- `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `prepend` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.prependAll(targetsOrAttributes, content)
+
+
+- `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `prepend` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.replace(targetOrAttributes, content)
+
+
+- `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `replace` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.replaceAll(targetsOrAttributes, content)
+
+
+- `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `replace` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.update(targetOrAttributes, content)
+
+
+- `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `update` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.updateAll(targetsOrAttributes, content)
+
+
+- `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `update` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.remove(targetOrAttributes)
+
+
+- `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
+
+Adds a Turbo Stream element with the action `remove` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.removeAll(targetsOrAttributes)
+
+
+- `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
+
+Adds a Turbo Stream element with the action `remove` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.before(targetOrAttributes, content)
+
+
+- `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `before` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.beforeAll(targetsOrAttributes, content)
+
+
+- `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `before` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.after(targetOrAttributes, content)
+
+
+- `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `after` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.afterAll(targetsOrAttributes, content)
+
+
+- `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `after` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.morph(targetOrAttributes, content)
+
+
+- `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `morph` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.morphAll(targetsOrAttributes, content)
+
+
+- `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
+
+- `content` {String} The HTML content of the element.
+Adds a Turbo Stream element with the action `morph` to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+#### turbostream.refresh(requestIdOrAttributes)
+
+- `requestIdOrAttributes` {String | Object<String, String>} Either the request ID as string or all attributes as an object.
+
+Adds a Turbo Stream Element with the action 'refresh' to the message.
+
+Returns: {TurboStream} The instance for chaining.
+
+***
 
 ### Class: TurboStreamElement
 
@@ -273,7 +463,7 @@ A Turbo Stream element. A Turbo Stream message consists of one or several Turbo 
 
 #### turbostreamelement.validate()
 
-Validates the attributes. `attributes.target` (or `attributes.targets`) and `attributes.action` are mandatory. Gets called by the constructor.
+Validates the attributes. `attributes.action` is mandatory. `attributes.target` (or `attributes.targets`) is mandatory for any action but 'refresh'. Gets called by the constructor.
 
 Throws {AttributeMissingError} when mandatory attributes are missing.  
 Throws {AttributeMalformedError} when mandatory attributes are malformed.  
@@ -281,7 +471,7 @@ Throws {AttributeInvalidError} when attributes are invalid.
 
 #### turbostreamelement.render()
 
-Renders this Turbo Stream element as HTML string. Omits `<template>[content]<template>` when the attribute `action` is 'remove'.
+Renders this Turbo Stream element as HTML string. Omits `<template>[content]<template>` when the attribute `action` is 'remove' or 'refresh'.
 
 Returns: {String} The rendered HTML fragment.
 
@@ -296,6 +486,8 @@ The HTML content.
 > - renderAttributesAsHtml()  
 Converts the attributes object to a string in the form
 of HTML attributes ({ name: value } -&#62; 'name="value"').
+
+***
 
 ### Class: TurboElement
 
@@ -338,6 +530,8 @@ Validation function to implement.
 
 Render function to implement.
 
+***
+
 ### Class: TurboReadable
 
 ```javascript
@@ -345,7 +539,7 @@ import { TurboReadable } from 'node-turbo';
 ```
 
 ***Extends:***  
-- stream~Readable  
+- node:stream~Readable  
 
 This class represents a readable stream which reads messages/elements from a Turbo Stream instance.
 
@@ -389,6 +583,8 @@ Gets called when the stream is being destroyed. The event listener for the event
 #### turboreadable.done()
 
 Pushes `null` to the readable buffer to signal the end of the input.
+
+***
 
 #### isTurboStreamRequest(request)
 
@@ -499,8 +695,9 @@ Sends the Turbo Stream element to the WebSocket.
 #### Inherited from class [TurboStream](#class-turbostream):
 
 > - `static` ACTIONS  
-List of all supported actions:
-'append', 'prepend', 'replace', 'update', 'remove', 'before' and 'after'.
+List of all supported official actions:
+`append`, `prepend`, `replace`, `update`, `remove`, `before`, `after`
+and `refresh`.
 > - `static` MIME_TYPE  
 MIME type for Turbo Stream messages.
 > - `get` length  
@@ -515,20 +712,24 @@ Adds the element to the buffer, if config.buffer === true.
 Fires the event 'element' with the added element.
 > - clear()  
 Clears the buffer.
-> - createReadableStream(opts[, streamOptions])  
-
+> - createReadableStream(opts, opts.continuous, streamOptions)  
+Creates a readable stream.
 > - custom(action, target, content)  
 Adds a Turbo Stream Element with a custom action.
 > - customAll(action, targets, content)  
 Adds a Turbo Stream Element with a custom action, targeting multiple DOM elements.
 > - flush()  
 Renders this Turbo Stream message and clears the buffer.
+> - refresh(requestIdOrAttributes)  
+Adds a Turbo Stream Element with the action 'refresh' to the message.
 > - render()  
 Renders this Turbo Stream message if there are buffered elements.
 > - renderElements()  
 If there are buffered elements, renders them and returns an array with the HTML fragments.
 > - updateConfig(config)  
 Extends/Overwrites the configuration.
+
+***
 
 ## node-turbo/koa
 
@@ -555,15 +756,12 @@ Koa's context object.
 
 See [https://koajs.com/#context](https://koajs.com/#context)  
 
-#### koaturbostream.status
-
-{number}
-
 #### Inherited from class [TurboStream](#class-turbostream):
 
 > - `static` ACTIONS  
-List of all supported actions:
-'append', 'prepend', 'replace', 'update', 'remove', 'before' and 'after'.
+List of all supported official actions:
+`append`, `prepend`, `replace`, `update`, `remove`, `before`, `after`
+and `refresh`.
 > - `static` MIME_TYPE  
 MIME type for Turbo Stream messages.
 > - `get` length  
@@ -578,20 +776,24 @@ Adds the element to the buffer, if config.buffer === true.
 Fires the event 'element' with the added element.
 > - clear()  
 Clears the buffer.
-> - createReadableStream(opts[, streamOptions])  
-
+> - createReadableStream(opts, opts.continuous, streamOptions)  
+Creates a readable stream.
 > - custom(action, target, content)  
 Adds a Turbo Stream Element with a custom action.
 > - customAll(action, targets, content)  
 Adds a Turbo Stream Element with a custom action, targeting multiple DOM elements.
 > - flush()  
 Renders this Turbo Stream message and clears the buffer.
+> - refresh(requestIdOrAttributes)  
+Adds a Turbo Stream Element with the action 'refresh' to the message.
 > - render()  
 Renders this Turbo Stream message if there are buffered elements.
 > - renderElements()  
 If there are buffered elements, renders them and returns an array with the HTML fragments.
 > - updateConfig(config)  
 Extends/Overwrites the configuration.
+
+***
 
 #### turbochargeKoa(koaApp, opts, opts.autoRender)
 
@@ -656,8 +858,9 @@ Sends the rendered message as HTTP response with the correct MIME type.
 #### Inherited from class [TurboStream](#class-turbostream):
 
 > - `static` ACTIONS  
-List of all supported actions:
-'append', 'prepend', 'replace', 'update', 'remove', 'before' and 'after'.
+List of all supported official actions:
+`append`, `prepend`, `replace`, `update`, `remove`, `before`, `after`
+and `refresh`.
 > - `static` MIME_TYPE  
 MIME type for Turbo Stream messages.
 > - `get` length  
@@ -672,20 +875,24 @@ Adds the element to the buffer, if config.buffer === true.
 Fires the event 'element' with the added element.
 > - clear()  
 Clears the buffer.
-> - createReadableStream(opts[, streamOptions])  
-
+> - createReadableStream(opts, opts.continuous, streamOptions)  
+Creates a readable stream.
 > - custom(action, target, content)  
 Adds a Turbo Stream Element with a custom action.
 > - customAll(action, targets, content)  
 Adds a Turbo Stream Element with a custom action, targeting multiple DOM elements.
 > - flush()  
 Renders this Turbo Stream message and clears the buffer.
+> - refresh(requestIdOrAttributes)  
+Adds a Turbo Stream Element with the action 'refresh' to the message.
 > - render()  
 Renders this Turbo Stream message if there are buffered elements.
 > - renderElements()  
 If there are buffered elements, renders them and returns an array with the HTML fragments.
 > - updateConfig(config)  
 Extends/Overwrites the configuration.
+
+***
 
 #### turbochargeExpress(expressApp, opts)
 
@@ -780,8 +987,9 @@ Returns: {SseTurboStream} The instance for chaining.
 #### Inherited from class [TurboStream](#class-turbostream):
 
 > - `static` ACTIONS  
-List of all supported actions:
-'append', 'prepend', 'replace', 'update', 'remove', 'before' and 'after'.
+List of all supported official actions:
+`append`, `prepend`, `replace`, `update`, `remove`, `before`, `after`
+and `refresh`.
 > - `get` length  
 The number of buffered Turbo Stream elements.
 > - config  
@@ -800,10 +1008,14 @@ Adds a Turbo Stream Element with a custom action.
 Adds a Turbo Stream Element with a custom action, targeting multiple DOM elements.
 > - flush()  
 Renders this Turbo Stream message and clears the buffer.
+> - refresh(requestIdOrAttributes)  
+Adds a Turbo Stream Element with the action 'refresh' to the message.
 > - renderElements()  
 If there are buffered elements, renders them and returns an array with the HTML fragments.
 > - updateConfig(config)  
 Extends/Overwrites the configuration.
+
+***
 
 ## node-turbo/errors
 
@@ -818,6 +1030,8 @@ import { ValidationError } from 'node-turbo/errors';
 
 Parent class for all validation errors.
 
+***
+
 ### Class: AttributeMalformedError
 
 ```javascript
@@ -828,6 +1042,8 @@ import { AttributeMalformedError } from 'node-turbo/errors';
 - [ValidationError](#class-validationerror)  
 
 Gets thrown when mandatory attributes are malformed.
+
+***
 
 ### Class: AttributeMissingError
 
@@ -840,6 +1056,8 @@ import { AttributeMissingError } from 'node-turbo/errors';
 
 Gets thrown when mandatory attributes are missing.
 
+***
+
 ### Class: AttributeInvalidError
 
 ```javascript
@@ -850,6 +1068,8 @@ import { AttributeInvalidError } from 'node-turbo/errors';
 - [ValidationError](#class-validationerror)  
 
 Gets thrown when invalid attributes are discovered.
+
+***
 
 
 ***
