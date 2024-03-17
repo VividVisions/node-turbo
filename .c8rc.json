@@ -1,5 +1,7 @@
 {
 	"src": "./",
 	"exclude": ["docs", "test", "playground"],
-	"all": true
+	"all": true,
+	"temp-directory": "./test/coverage/tmp",
+	"clean": true
 }

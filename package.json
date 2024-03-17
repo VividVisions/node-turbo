@@ -39,7 +39,6 @@
 		"test:package": "NODE_ENV=testing mocha --ignore \"./test/unit/**\" --ignore \"./test/integration/**\"",
 		"test:all": "NODE_ENV=testing mocha",
 		"test:coverage": "c8 -c './.c8rc.json' npm test",
-		"pretest:coverage": "rm -rd ./coverage",
 		"docs": "esdoc -c ./.esdoc.json",
 		"postdocs": "cp -f ./docs/internal/API.md ./docs"
 	},
