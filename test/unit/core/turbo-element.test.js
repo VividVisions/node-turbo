@@ -2,6 +2,11 @@
 import { expect } from 'chai';
 import { TurboElement } from '#core';
 
+
+class NonThrowingTurboElement extends TurboElement {
+	validate() {}
+}
+
 describe('TurboElement', function() {
 	
 	it('Constructor correctly assigns properties (and throws Error)', function() {
@@ -12,4 +17,28 @@ describe('TurboElement', function() {
 		}).to.throw();
 	});
 	
+
+	describe('renderAttributesAsHtml()', function() {
+
+		it('correctly renders attributes', function() {
+			const te = new NonThrowingTurboElement({ 
+					foo: 'bar',
+					two: 2
+				});
+
+			expect(te.renderAttributesAsHtml()).to.equal('foo="bar" two="2"');
+		});
+
+
+		it('correctly renders booelan attributes', function() {
+			const te = new NonThrowingTurboElement({ 
+					foo: 'bar',
+					bool: null
+				});
+
+			expect(te.renderAttributesAsHtml()).to.equal('foo="bar" bool');
+		});	
+
+	});
+
 });
