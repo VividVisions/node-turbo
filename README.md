@@ -1,10 +1,11 @@
 # node-turbo
 
-A library for Node.js to assist with the server side of [37signals](https://37signals.com)' [Hotwire Turbo](https://turbo.hotwired.dev) framework. It provides classes and functions for Web servers and also convenience functions for the frameworks [Koa](https://koajs.com) and [Express](https://expressjs.com) as well as for [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) and [SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events).
+node-turbo is a library for Node.js to assist with the server side of [37signals](https://37signals.com)' [Hotwire Turbo](https://turbo.hotwired.dev) framework. It provides classes and functions for Web servers and also convenience functions for the frameworks [Koa](https://koajs.com) and [Express](https://expressjs.com) as well as for [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) and [SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events).
 
 This documentation assumes that you are familiar with Turbo and its [handbook](https://turbo.hotwired.dev/handbook/introduction).
 
 ## Table of Contents
+
 - [Installation](#installation)
 - [Compatibility](#compatibility)
   - [Browser](#browser)
@@ -14,7 +15,10 @@ This documentation assumes that you are familiar with Turbo and its [handbook](h
 - [Usage](#usage)
   - [Basics\/Standalone](#basicsstandalone)
     - [Turbo Stream](#turbo-stream)
+      - [Action shortcut functions](#action-shortcut-functions)
+      - [Additional attributes](#additional-attributes)
       - [Target multiple elements](#target-multiple-elements)
+      - [Refresh action](#refresh-action)
       - [Custom actions](#custom-actions)
       - [Using the Node.js streams API](#using-the-nodejs-streams-api)
     - [Turbo Frame](#turbo-frame)    
@@ -32,7 +36,8 @@ This documentation assumes that you are familiar with Turbo and its [handbook](h
 - [License](#license)
 
 ## Installation
-```console
+
+```shell
 npm install node-turbo 
 ```
 
@@ -49,11 +54,11 @@ node-turbo has been tested with:
 
 | Name | Version(s) |
 | :--- | :--- |
-| [Node.js](https://nodejs.org/) | 16.6  — 18.16.0 |
-| [Hotwire Turbo](https://turbo.hotwired.dev/) | 7.3.0 — 8.0.0-beta.2 |
-| [Koa](https://koajs.com/) | 2.14.2 |
-| [Express](https://expressjs.com/) | 4.18.2 |
-| [ws](https://github.com/websockets/ws) | 8.15.1 |
+| [Node.js](https://nodejs.org/) | 16.6 - 20.11.1 |
+| [Hotwire Turbo](https://turbo.hotwired.dev/) | 7.3.0 - 8.0.4 |
+| [Koa](https://koajs.com/) | 2.14.2 - 2.15.0 |
+| [Express](https://expressjs.com/) | 4.18.2 - 4.18.3 |
+| [ws](https://github.com/websockets/ws) | 8.15.1 -  8.16.0 |
 
 ## API docs
 See [`/docs/API.md`](./docs/API.md) for a documentation of all node-turbo classes and functions.
@@ -85,7 +90,8 @@ This will render the following HTML fragment:
 </turbo-stream>
 ```
 
-For all [supported actions](https://turbo.hotwired.dev/handbook/streams#stream-messages-and-actions), there are chainable shortcut functions:
+##### Action shortcut functions
+For all supported [official actions](https://turbo.hotwired.dev/handbook/streams#stream-messages-and-actions) (`append`, `prepend`, `replace`, `update`, `remove`, `before`, `after`, `morph` and `refresh`), there are chainable shortcut functions:
 
 ```javascript
 import { TurboStream } from 'node-turbo';
@@ -115,14 +121,41 @@ Result:
 </turbo-stream>
 ```
 
-##### Target multiple elements
-If you want to [target multiple elements](https://turbo.hotwired.dev/handbook/streams#actions-with-multiple-targets), you can use the `[action]All()` function:
+##### Additional attributes
+If you want/need to add additional attributes to an Turbo Stream element, you can always pass an object instead of the target ID string. Attributes with value `null` will be rendered as boolean attributes.
 
 ```javascript
 import { TurboStream } from 'node-turbo';
 
-let ts = new TurboStream()
-  .appendAll('.my-targets', '<p>My content</p>');
+const ts = new TurboStream()
+  .morph({
+    target: 'target-id',
+    'children-only': null,
+    custom: 'attribute'
+  }, 
+  '<p>My content</p>');
+
+const html = ts.render();
+```
+
+Result:
+
+```html
+<turbo-stream action="morph" target="target-id" children-only custom="attribute">
+  <template>
+    <p>My content</p>
+  </template>
+</turbo-stream>
+```
+
+##### Target multiple elements
+If you want to [target multiple elements](https://turbo.hotwired.dev/handbook/streams#actions-with-multiple-targets), you can use the `[action]All()` function (not available when using the `refresh` action):
+
+```javascript
+import { TurboStream } from 'node-turbo';
+
+const ts = new TurboStream().appendAll('.my-targets', '<p>My content</p>');
+const html = ts.render();
 ```
 
 Result:
@@ -135,13 +168,45 @@ Result:
 </turbo-stream>
 ```
 
+##### Refresh action
+The action `refresh` works differently as it does not have a target or targets.
+
+```javascript
+import { TurboStream } from 'node-turbo';
+
+let ts = new TurboStream().refresh();
+let html = ts.render();
+// Renders <turbo-stream action="refresh"></turbo-stream>
+
+ts.refresh('1234');
+html = ts.render();
+// Renders <turbo-stream action="refresh" request-id="1234"></turbo-stream>
+
+ts.refresh({
+  'request-id': '1234',
+  'custom': 'param'
+});
+html = ts.render();
+// Renders <turbo-stream action="refresh" request-id="1234" custom="param"></turbo-stream>
+```
+
 ##### Custom actions
 If you want to use [custom actions](https://turbo.hotwired.dev/handbook/streams#custom-actions), you can use the `custom()`/`customAll()` functions: 
 ```javascript
 import { TurboStream } from 'node-turbo';
 
-let ts = new TurboStream()
-  .custom('custom-action', 'target-id', '<p>My content</p>');
+const ts = new TurboStream().custom('custom-action', 'target-id', '<p>My content</p>');
+const html = ts.render();
+```
+
+Result:
+
+```html
+<turbo-stream action="custom-action" target="target-id">
+  <template>
+    <p>My content</p>
+  </template>
+</turbo-stream>
 ```
 
 ##### Using the Node.js streams API
@@ -154,7 +219,13 @@ import { TurboStream } from 'node-turbo';
 const ts = new TurboStream();
 const readable = ts.createReadableStream();
 
-readable.pipe(process.stdout)
+readable.pipe(process.stdout);
+
+// These elements get piped immediately:
+ts
+  .append('target-id', '<p>My content</p>')
+  .replace('target-id-2', '<p>New content</p>')
+  .remove('target-id-3');
 ```
 
 See [Koa](#koa), [SSE](#sse) or [WebSocket](#websocket) for further examples.
@@ -164,7 +235,7 @@ See [Koa](#koa), [SSE](#sse) or [WebSocket](#websocket) for further examples.
 import { TurboFrame } from 'node-turbo';
 
 const tf = new TurboFrame('my-id', '<p>content</p>');
-const html = tframe.render();
+const html = tf.render();
 ```
 
 This will render the following HTML fragment:
@@ -175,10 +246,32 @@ This will render the following HTML fragment:
 </turbo-stream>
 ``` 
 
+You can add additional attributes by passing an object instead of the id string:
+
+```javascript
+import { TurboFrame } from 'node-turbo';
+
+const tf = new TurboFrame({
+    id: 'my-id',
+    custom: 'foo'
+  }, '<p>content</p>');
+const html = tf.render();
+```
+
+Result:
+
+```html
+<turbo-frame id="my-id" custom="foo">
+  <p>My content</p>
+</turbo-stream>
+``` 
+
 #### Request Helper Functions
+
 node-turbo also provides the following helper functions. You can use these to adapt the behaviour of your server to the differend kind of requests.
 
 ##### isTurboStreamRequest(request)
+
 ```javascript
 import { isTurboStreamRequest } from 'node-turbo';
 
@@ -426,7 +519,7 @@ const httpServer = http.createServer((req, res) => {
       padding: 10px;
     }
     </style>
-    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.0-beta.2/dist/turbo.es2017-esm.js"></script>
+    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.4/dist/turbo.es2017-esm.js"></script>
     <script>
       var eventSource = new EventSource('/sse');
       eventSource.onmessage = function(event) {
@@ -513,7 +606,7 @@ app.use(async (ctx, next) => {
       padding: 10px;
     }
     </style>
-    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.0-beta.2/dist/turbo.es2017-esm.js"></script>
+    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.4/dist/turbo.es2017-esm.js"></script>
     <script>
       var eventSource = new EventSource('/sse');
       eventSource.onmessage = function(event) {
@@ -590,7 +683,7 @@ app.get('/', async (req, res) => {
       padding: 10px;
     }
     </style>
-    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.0-beta.2/dist/turbo.es2017-esm.js"></script>
+    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.4/dist/turbo.es2017-esm.js"></script>
     <script>
       var eventSource = new EventSource('/sse');
       eventSource.onmessage = function(event) {
