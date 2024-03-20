@@ -21,7 +21,8 @@ This documentation assumes that you are familiar with Turbo and its [handbook](h
       - [Refresh action](#refresh-action)
       - [Custom actions](#custom-actions)
       - [Using the Node.js streams API](#using-the-nodejs-streams-api)
-    - [Turbo Frame](#turbo-frame)    
+    - [Turbo Frame](#turbo-frame)
+      - [Additional attributes](#additional-attributes-1)
     - [Request helper functions](#request-helper-functions)
       - [isTurboStreamRequest(request)](#isturbostreamrequestrequest)
       - [isTurboFrameRequest(request)](#isturboframerequestrequest)
@@ -230,6 +231,8 @@ ts
 
 See [Koa](#koa), [SSE](#sse) or [WebSocket](#websocket) for further examples.
 
+***
+
 #### Turbo Frame
 ```javascript
 import { TurboFrame } from 'node-turbo';
@@ -244,9 +247,10 @@ This will render the following HTML fragment:
 <turbo-frame id="my-id">
   <p>My content</p>
 </turbo-stream>
-``` 
+```
 
-You can add additional attributes by passing an object instead of the id string:
+##### Additional attributes
+You can add additional attributes by passing an object instead of the `id` string:
 
 ```javascript
 import { TurboFrame } from 'node-turbo';
@@ -264,7 +268,9 @@ Result:
 <turbo-frame id="my-id" custom="foo">
   <p>My content</p>
 </turbo-stream>
-``` 
+```
+
+***
 
 #### Request Helper Functions
 
