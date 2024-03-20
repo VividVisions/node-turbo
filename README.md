@@ -716,4 +716,4 @@ app.listen(config.port);
 ```
 ## License
  
-node-turbo is © 2024 Walter Krivanek <walter@vividvisions.com> and released under the [MIT license](https://mit-license.org).
+node-turbo is © 2024 Walter Krivanek and released under the [MIT license](https://mit-license.org).
