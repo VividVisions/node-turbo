@@ -1,13 +1,10 @@
 
 import chai, { expect } from 'chai';
 import spies from 'chai-spies';
-import eventemitter2 from 'chai-eventemitter2';
 import { TurboStream, TurboElement, TurboStreamElement, TurboReadable } from '#core';
 import { Readable } from 'node:stream';
 
-chai.use(eventemitter2());
 chai.use(spies);
-// const sandbox = chai.spy.sandbox();
 
 const attr = {
 	action: 'a',
