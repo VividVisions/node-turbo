@@ -283,7 +283,7 @@ import { isTurboStreamRequest } from 'node-turbo';
 
 const isTsReq = isTurboStreamRequest(req);
 ```
-Checks if the request is a Turbo Stream request by looking if the HTTP header `Accept` includes the MIME type `text/vnd.turbo-stream.html`. Expects an object like an http.ClientRequest instance but doesn not make any hard checks. Returns `true` or `false`.
+Checks if the request is a Turbo Stream request by looking if the HTTP header `Accept` includes the MIME type `text/vnd.turbo-stream.html`. Expects an object like an http.ClientRequest instance but does not make any hard checks. Returns `true` or `false`.
 
 ##### isTurboFrameRequest(request)
 ```javascript
@@ -299,7 +299,7 @@ import { getTurboFrameId } from 'node-turbo';
 
 const tfId = getTurboFrameId(req);
 ```
-Returns the content of the HTTP header `turbo-frame`, which holds the ID of the Turbo Frame which made the request. Expects an object like an `http.ClientRequest` instance but doesn not make any hard checks.
+Returns the content of the HTTP header `turbo-frame`, which holds the ID of the Turbo Frame which made the request. Expects an object like an `http.ClientRequest` instance but does not make any hard checks.
 
 ### Koa
 You can add convencience functions to your Koa application by calling `turbochargeKoa(app)`. This adds the following functions to Koa's `context`:
