@@ -1,6 +1,6 @@
 # node-turbo API documentation
 
-Version 1.1.1
+Version 1.2.0
 
 ## Table of Contents
 
@@ -284,9 +284,7 @@ Returns: {stream.Readable | TurboReadable} Either a readable stream or a TurboRe
 
 #### turbostream.append(targetOrAttributes, content)
 
-
 - `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `append` to the message.
 
@@ -294,9 +292,7 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.appendAll(targetsOrAttributes, content)
 
-
 - `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `append` to the message.
 
@@ -304,9 +300,7 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.prepend(targetOrAttributes, content)
 
-
 - `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `prepend` to the message.
 
@@ -314,9 +308,7 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.prependAll(targetsOrAttributes, content)
 
-
 - `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `prepend` to the message.
 
@@ -324,9 +316,7 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.replace(targetOrAttributes, content)
 
-
 - `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `replace` to the message.
 
@@ -334,9 +324,7 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.replaceAll(targetsOrAttributes, content)
 
-
 - `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `replace` to the message.
 
@@ -344,9 +332,7 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.update(targetOrAttributes, content)
 
-
 - `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `update` to the message.
 
@@ -354,16 +340,13 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.updateAll(targetsOrAttributes, content)
 
-
 - `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `update` to the message.
 
 Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.remove(targetOrAttributes)
-
 
 - `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
 
@@ -373,7 +356,6 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.removeAll(targetsOrAttributes)
 
-
 - `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
 
 Adds a Turbo Stream element with the action `remove` to the message.
@@ -382,9 +364,7 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.before(targetOrAttributes, content)
 
-
 - `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `before` to the message.
 
@@ -392,9 +372,7 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.beforeAll(targetsOrAttributes, content)
 
-
 - `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `before` to the message.
 
@@ -402,9 +380,7 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.after(targetOrAttributes, content)
 
-
 - `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `after` to the message.
 
@@ -412,9 +388,7 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.afterAll(targetsOrAttributes, content)
 
-
 - `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `after` to the message.
 
@@ -422,9 +396,10 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.morph(targetOrAttributes, content)
 
+> [!WARNING]
+> Deprecated since v1.2.0! Use `update()` or `replace()` with attribute `{ method: 'morph' }` instead.
 
 - `targetOrAttributes` {String | Object<String.String>} Either the target ID as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `morph` to the message.
 
@@ -432,9 +407,10 @@ Returns: {TurboStream} The instance for chaining.
 
 #### turbostream.morphAll(targetsOrAttributes, content)
 
+> [!WARNING]
+> Deprecated since v1.2.0! Use `updateAll()` or `replaceAll()` with attribute `{ method: 'morph' }` instead.
 
 - `targetsOrAttributes` {String | Object<String.String>} Either the query targeting multiple DOM elements as string or all attributes as object.
-
 - `content` {String} The HTML content of the element.
 Adds a Turbo Stream element with the action `morph` to the message.
 

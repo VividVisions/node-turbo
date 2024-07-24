@@ -51,12 +51,12 @@ This module has been built for Node.js only and does not work in the browser (no
 node-turbo as been written as an ECMAScript module and all examples will use ES module syntax. If you want to use node-turbo within a CommonJS application, use dynamic [`import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) instead of `require()`.
 
 ### Tested
-node-turbo has been tested with:
+node-turbo has been tested with 100% code coverage with the following engines/libraries:
 
 | Name | Version(s) |
 | :--- | :--- |
 | [Node.js](https://nodejs.org/) | 16.6 - 21.5.0 |
-| [Hotwire Turbo](https://turbo.hotwired.dev/) | 7.3.0 - 8.0.4 |
+| [Hotwire Turbo](https://turbo.hotwired.dev/) | 7.3.0 - 8.0.5 |
 | [Koa](https://koajs.com/) | 2.14.2 - 2.15.3 |
 | [Express](https://expressjs.com/) | 4.18.2 - 4.19.2 |
 | [ws](https://github.com/websockets/ws) | 8.15.1 -  8.18.0 |
@@ -92,7 +92,7 @@ This will render the following HTML fragment:
 ```
 
 ##### Action shortcut functions
-For all supported [official actions](https://turbo.hotwired.dev/handbook/streams#stream-messages-and-actions) (`append`, `prepend`, `replace`, `update`, `remove`, `before`, `after`, `morph` and `refresh`), there are chainable shortcut functions:
+For all supported [official actions](https://turbo.hotwired.dev/handbook/streams#stream-messages-and-actions) (`append`, `prepend`, `replace`, `update`, `remove`, `before`, `after` and `refresh`), there are chainable shortcut functions:
 
 ```javascript
 import { TurboStream } from 'node-turbo';
@@ -122,6 +122,10 @@ Result:
 </turbo-stream>
 ```
 
+> [!NOTE]
+> There briefly was a `morph` action, which node-turbo supported since version 1.0.1. This action has been removed from Hotwire Turbo and its functionality integrated into the `update` and `replace` actions (when used with attribute `method="morph"`). Therefore the action shortcut functions `morph()` and `morphAll()` have been deprecated and will likely be removed in the future.
+
+
 ##### Additional attributes
 If you want/need to add additional attributes to an Turbo Stream element, you can always pass an object instead of the target ID string. Attributes with value `null` will be rendered as boolean attributes.
 
@@ -129,10 +133,10 @@ If you want/need to add additional attributes to an Turbo Stream element, you ca
 import { TurboStream } from 'node-turbo';
 
 const ts = new TurboStream()
-  .morph({
+  .update({
     target: 'target-id',
-    'children-only': null,
-    custom: 'attribute'
+    method: 'morph',
+    custom: null
   }, 
   '<p>My content</p>');
 
@@ -142,7 +146,7 @@ const html = ts.render();
 Result:
 
 ```html
-<turbo-stream action="morph" target="target-id" children-only custom="attribute">
+<turbo-stream action="update" target="target-id" method="morph" custom>
   <template>
     <p>My content</p>
   </template>
@@ -150,7 +154,7 @@ Result:
 ```
 
 ##### Target multiple elements
-If you want to [target multiple elements](https://turbo.hotwired.dev/handbook/streams#actions-with-multiple-targets), you can use the `[action]All()` function (not available when using the `refresh` action):
+If you want to [target multiple elements](https://turbo.hotwired.dev/handbook/streams#actions-with-multiple-targets), you can use the `[action]All()` function (not available for the `refresh` action):
 
 ```javascript
 import { TurboStream } from 'node-turbo';
