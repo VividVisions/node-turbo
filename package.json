@@ -67,7 +67,7 @@
 		"@enterthenamehere/esdoc-external-nodejs-plugin": "^2.6.0-dev.1",
 		"@enterthenamehere/esdoc-importpath-plugin": "^2.6.0-dev.1",
 		"@enterthenamehere/esdoc-standard-plugin": "^2.6.0-dev.2",
-		"@hotwired/turbo": "^8.0.4",
+		"@hotwired/turbo": "^8.0.5",
 		"@vividvisions/esdoc-api-doc-markdown-plugin": "file:../esdoc-api-doc-markdown-plugin",
 		"c8": "^10.1.2",
 		"chai": "^5.1.1",
