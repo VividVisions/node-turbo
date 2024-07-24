@@ -48,11 +48,11 @@
 		"#errors": "./lib/errors/index.js"
 	},
 	"scripts": {
-		"test": "NODE_ENV=testing mocha --require \"./test/hooks.js\"",
-		"test:unit": "NODE_ENV=testing mocha --ignore \"./test/integration/**\" --ignore \"./test/*\"",
-		"test:integration": "NODE_ENV=testing mocha --ignore \"./test/unit/**\" --ignore \"./test/*\"",
-		"test:package": "NODE_ENV=testing mocha --ignore \"./test/unit/**\" --ignore \"./test/integration/**\"",
-		"test:all": "NODE_ENV=testing mocha",
+		"test": "NODE_ENV=testing mocha --require \"./test/hooks.js\" \"./test/**/*.test.js\"",
+		"test:unit": "NODE_ENV=testing mocha \"./test/unit/**/*.test.js\"",
+		"test:integration": "NODE_ENV=testing mocha \"./test/integration/**/*.test.js\"",
+		"test:package": "NODE_ENV=testing mocha \"./test/package.test.js\"",
+		"test:all": "NODE_ENV=testing mocha \"./test/**/*.test.js\"",
 		"test:coverage": "c8 -c './.c8rc.json' npm test",
 		"docs": "esdoc -c ./.esdoc.json",
 		"postdocs": "cp -f ./docs/internal/API.md ./docs"

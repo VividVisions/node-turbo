@@ -2,6 +2,5 @@
 	"ui": "bdd",
 	"recursive": true,
 	"check-leaks": true,
-	"parallel": false,
-	"spec": "./test/**/*.test.js"
+	"parallel": false	
 }
