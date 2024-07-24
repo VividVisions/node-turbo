@@ -1,13 +1,9 @@
 
-import chai, { expect } from 'chai';
-import spies from 'chai-spies';
+import { expect, spy } from '../../chai.js';
 import { turbochargeKoa } from '#koa';
 import { TurboStream, TurboReadable } from '#core';
 import { SseTurboStream } from '#sse';
 import { Transform } from 'node:stream';
-
-chai.use(spies);
-const sandbox = chai.spy.sandbox();
 
 describe('turbochargeKoa()', function() {
 
@@ -25,13 +21,13 @@ describe('turbochargeKoa()', function() {
 		};
 
 		// sandbox.on(this.mockKoaApp.context.req.socket, ['setTimeout', 'setNoDelay', 'setKeepAlive']);
-		chai.spy.on(this.mockKoaApp.context, 'set');
+		spy.on(this.mockKoaApp.context, 'set');
 	});
 
 
 	afterEach(function() {
 		// sandbox.restore();
-		chai.spy.restore(this.mockKoaApp.context, 'set');
+		spy.restore(this.mockKoaApp.context, 'set');
 	});
 
 

@@ -1,5 +1,5 @@
 
-import { expect } from 'chai';
+import { expect } from '../chai.js';
 import request from 'supertest';
 import express from 'express';
 import { TurboStream, TurboFrame } from '#core';

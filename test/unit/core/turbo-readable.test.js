@@ -1,10 +1,7 @@
 
-import chai, { expect } from 'chai';
-import spies from 'chai-spies';
+import { expect, spy } from '../../chai.js';
 import { TurboStream, TurboElement, TurboStreamElement, TurboReadable } from '#core';
 import { Readable } from 'node:stream';
-
-chai.use(spies);
 
 const attr = {
 	action: 'a',
@@ -20,12 +17,12 @@ describe('TurboReadable', function() {
 
 
 	beforeEach(function() {
-		chai.spy.on(this.readable, 'push');
+		spy.on(this.readable, 'push');
 	});
 
 
 	afterEach(function() {
-		chai.spy.restore(this.readable, 'push');
+		spy.restore(this.readable, 'push');
 	});
 
 
@@ -73,11 +70,11 @@ describe('TurboReadable', function() {
 
 	it('_destroy() gets called when steam is destroyed', function() {
 		const readable = this.ts.createReadableStream();
-		chai.spy.on(readable, '_destroy');
+		spy.on(readable, '_destroy');
 		readable.destroy();
 
 		expect(readable._destroy).to.have.been.called();
-		chai.spy.restore(readable, '_destroy');
+		spy.restore(readable, '_destroy');
 	});
 
 

@@ -1,5 +1,5 @@
 
-import { expect } from 'chai';
+import { expect } from '../../chai.js';
 import { TurboFrame } from '#core';
 import { AttributeMissingError, AttributeMalformedError } from '#errors';
 

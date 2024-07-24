@@ -1,10 +1,8 @@
 
-import chai, { expect } from 'chai';
-import spies from 'chai-spies';
+import { expect, spy } from '../../chai.js';
 import { WsTurboStream } from '#ws';
 import { TurboStream } from '#core';
 
-chai.use(spies);
 
 // Mock WebSocket instance.
 const mockWs = {
@@ -16,12 +14,12 @@ const mockWs = {
 describe('WsTurboStream', function() {
 
 	beforeEach(() => {
-		chai.spy.on(mockWs, 'send');
+		spy.on(mockWs, 'send');
 	});
 
 
 	afterEach(() => {
-		chai.spy.restore(mockWs, 'send');
+		spy.restore(mockWs, 'send');
 	});
 
 

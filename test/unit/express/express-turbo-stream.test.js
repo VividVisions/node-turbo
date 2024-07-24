@@ -1,12 +1,9 @@
 
-import chai, { expect } from 'chai';
-import spies from 'chai-spies';
+import { expect, spy } from '../../chai.js';
 import { ExpressTurboStream } from '#express';
 import { TurboStream } from '#core';
 
-chai.use(spies);
-const sandbox = chai.spy.sandbox();
-
+const sandbox = spy.sandbox();
 
 describe('ExpressTurboStream', function() {
 

@@ -1,5 +1,5 @@
 
-import { expect } from 'chai';
+import { expect } from '../../chai.js';
 import { SseTurboStream } from '#sse';
 import { Transform } from 'node:stream';
 

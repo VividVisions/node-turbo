@@ -1,10 +1,7 @@
 
-import chai, { expect } from 'chai';
-import eventemitter2 from 'chai-eventemitter2';
+import { expect } from '../../chai.js';
 import { TurboStream, TurboElement, TurboStreamElement, TurboReadable } from '#core';
 import { Readable } from 'node:stream';
-
-chai.use(eventemitter2());
 
 const attr = {
 	action: 'a',
@@ -58,10 +55,15 @@ describe('TurboStream', function() {
 			expect(ts.elements[0].content).to.be.equal('c');
 		});
 
-
 		it('emits event \'element\' with Turbo Stream element', function() {
-			const ts = new TurboStream({ action: 'a', target: 't' }, 'c');
-			expect(ts).to.emit('element', { withArgs: (element) => element instanceof TurboStreamElement });
+			return new Promise(resolve => {
+				const ts = new TurboStream();
+				ts.on('element', (el) => {
+					expect(el).to.be.an.instanceof(TurboStreamElement);
+					resolve();
+				});
+				ts.addElement({ action: 'a', target: 't' }, 'c');
+			});
 		});
 
 
@@ -83,9 +85,15 @@ describe('TurboStream', function() {
 		});
 
 
-		it('emits event \'config\' with config object', function() {
-			const ts = new TurboStream().updateConfig({ foo: 'bar' });
-			expect(ts).to.emit('config', { withArgs: ts.config });
+		it('emits event \'config\' with config object', async function() {
+			const ts = new TurboStream();
+
+			const result = await new Promise(resolve => {
+				ts.on('config', resolve)
+				ts.updateConfig({ foo: 'bar' });
+			});
+
+			expect(result).to.deep.equal(ts.config);
 		});
 
 
@@ -104,9 +112,14 @@ describe('TurboStream', function() {
 		});
 
 		it('emits event \'clear\'', function() {
-			const ts = new TurboStream({ action: 'a', target: 't' }, 'c');
-			ts.clear();
-			expect(ts).to.emit('clear');
+			return new Promise(resolve => {
+				const ts = new TurboStream({ action: 'a', target: 't' }, 'c');
+				ts.on('clear', () => {
+					expect(true).to.be.true;
+					resolve();
+				});
+				ts.clear();
+			});
 		});
 
 		it('is chainable', function() {
@@ -146,11 +159,15 @@ describe('TurboStream', function() {
 			expect(ts.render()).to.be.null;
 		});
 
-		it('emits event \'render\' with HTML string', function() {
-			const ts = new TurboStream({ action: 'a', target: 't' }, 'c');
-			const html = ts.render();
+		it('emits event \'render\' with HTML string', async function() {
+			const 
+				ts = new TurboStream({ action: 'a', target: 't' }, 'c'),
+				result = await new Promise(resolve => {
+					ts.on('render', resolve);
+					ts.render();
+				});
 
-			expect(ts).to.emit('render', { withArgs: html });
+			expect(result).to.be.equal('<turbo-stream action="a" target="t"><template>c</template></turbo-stream>');
 		});
 	});
 
@@ -172,14 +189,20 @@ describe('TurboStream', function() {
 			expect(html).to.equal('<turbo-stream action="append" target="t"><template>c</template></turbo-stream>');
 		});
 
-		it('emits events \'render\' and \'clear\'', function() {
-			const 
-				ts = new TurboStream({ action: 'a', target: 't' }, 'c'),
-				html = ts.flush();
+		it('emits events \'render\' and \'clear\'', async function() {
+			let flushHtml;
 
-			expect(ts)
-				.to.emit('render', { withArgs: html })
-				.to.emit('clear');
+			const result = await new Promise(resolve => {
+				const ts = new TurboStream({ action: 'a', target: 't' }, 'c');
+				let resultHtml;
+
+				ts.on('render', html => resultHtml = html);
+				ts.on('clear', resolve(resultHtml));
+
+				flushHtml = ts.flush();
+			});
+
+			expect(result).to.deep.equal(flushHtml);
 		});
 	});
 
@@ -228,10 +251,11 @@ describe('TurboStream', function() {
 		});
 
 		it ('[action]() emits event \'element\'', function() {
-			const ts = new TurboStream();
-			ts.append({ target: 't', foo: 'bar' }, 'c');
-
-			expect(ts).to.emit('element');
+			return new Promise(resolve => {
+				const ts = new TurboStream();
+				ts.on('element', resolve);
+				ts.append({ target: 't', foo: 'bar' }, 'c');
+			});
 		});
 
 
@@ -308,6 +332,53 @@ describe('TurboStream', function() {
 			ts.refresh({ foo: 'bar' });
 			expect(ts.elements[0].attributes).to.have.property('foo');
 			expect(ts.elements[0].attributes.foo).to.equal('bar');
+		});
+
+		// Test deprecated functions.
+		describe('Deprecated actions', function() {
+
+			it ('morph() warns about deprecation.', function() {
+				return new Promise(resolve => {
+					process.once('warning', err => {
+						expect(err).to.be.an('error');
+						expect(err.message).to.include('morph() is deprecated');
+						resolve();
+					});
+
+					const ts = new TurboStream();
+					ts.morph('t', 'c');
+				});
+			});
+
+			it ('morph() adds TurboElement with action \'morph\'', function() {
+				const ts = new TurboStream();
+				ts.morph('t', 'c');
+
+				expect(ts.elements[0] instanceof TurboElement).to.be.true;
+				expect(ts.elements[0].attributes.action).to.equal('morph');
+			});
+
+			it ('morphAll() warns about deprecation.', function() {
+				return new Promise(resolve => {
+					process.once('warning', err => {
+						expect(err).to.be.an('error');
+						expect(err.message).to.include('morphAll() is deprecated');
+						resolve();
+					});
+
+					const ts = new TurboStream();
+					ts.morphAll('ts', 'c');
+				});
+			});
+
+			it ('morphAll() adds TurboElement with action \'morph\'', function() {
+				const ts = new TurboStream();
+				ts.morphAll('ts', 'c');
+
+				expect(ts.elements[0] instanceof TurboElement).to.be.true;
+				expect(ts.elements[0].attributes.action).to.equal('morph');
+			});
+
 		});
 	});
 

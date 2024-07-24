@@ -1,5 +1,5 @@
 
-import { expect } from 'chai';
+import { expect } from '../chai.js';
 import request from 'supertest';
 import Koa from 'koa';
 import EventSource from 'eventsource';

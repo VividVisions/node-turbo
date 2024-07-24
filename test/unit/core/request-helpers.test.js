@@ -1,5 +1,5 @@
 
-import { expect } from 'chai';
+import { expect } from '../../chai.js';
 import * as hlp from '../../../lib/request-helpers.js';
 import httpMocks from 'node-mocks-http';
 
