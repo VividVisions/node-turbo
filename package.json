@@ -58,7 +58,7 @@
 		"postdocs": "cp -f ./docs/internal/API.md ./docs"
 	},
 	"dependencies": {
-		"debug": "^4.3.5",
+		"debug": "^4.3.7",
 		"is-plain-object": "^5.0.0",
 		"negotiator": "^0.6.3"
 	},
@@ -67,20 +67,20 @@
 		"@enterthenamehere/esdoc-external-nodejs-plugin": "^2.6.0-dev.1",
 		"@enterthenamehere/esdoc-importpath-plugin": "^2.6.0-dev.1",
 		"@enterthenamehere/esdoc-standard-plugin": "^2.6.0-dev.2",
-		"@hotwired/turbo": "^8.0.5",
+		"@hotwired/turbo": "^8.0.6",
 		"@vividvisions/esdoc-api-doc-markdown-plugin": "file:../esdoc-api-doc-markdown-plugin",
 		"c8": "^10.1.2",
 		"chai": "^5.1.1",
 		"chai-spies": "^1.1.0",
 		"colorette": "^2.0.20",
 		"eventsource": "^2.0.2",
-		"express": "^4.19.2",
+		"express": "^4.21.0",
 		"git-repo-info": "^2.1.1",
 		"koa": "^2.15.3",
 		"koa-route": "^4.0.1",
 		"koa-static": "^5.0.0",
-		"mocha": "^10.7.0",
-		"node-mocks-http": "^1.15.0",
+		"mocha": "^10.7.3",
+		"node-mocks-http": "^1.16.0",
 		"nunjucks": "^3.2.4",
 		"supertest": "^7.0.0",
 		"ws": "^8.18.0"
