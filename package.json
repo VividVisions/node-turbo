@@ -48,14 +48,15 @@
 		"#errors": "./lib/errors/index.js"
 	},
 	"scripts": {
-		"test": "NODE_ENV=testing mocha --require \"./test/hooks.js\" \"./test/**/*.test.js\"",
+		"test": "NODE_ENV=testing mocha --require \"./test/hooks.js\" \"./test/unit/**/*.test.js\" \"./test/integration/**/*.test.js\"",
 		"test:unit": "NODE_ENV=testing mocha \"./test/unit/**/*.test.js\"",
 		"test:integration": "NODE_ENV=testing mocha \"./test/integration/**/*.test.js\"",
 		"test:package": "NODE_ENV=testing mocha \"./test/package.test.js\"",
-		"test:all": "NODE_ENV=testing mocha \"./test/**/*.test.js\"",
+		"test:all": "NODE_ENV=testing mocha \"./test/unit/**/*.test.js\" \"./test/integration/**/*.test.js\" \"./test/package.test.js\"",
 		"test:coverage": "c8 -c './.c8rc.json' npm test",
-		"docs": "esdoc -c ./.esdoc.json",
-		"postdocs": "cp -f ./docs/internal/API.md ./docs"
+		"pretest:e2e": "cp -f ./node_modules/@hotwired/turbo/dist/turbo.es2017-esm.js ./test/end2end/static/",
+		"test:e2e": "npx playwright test -c ./test/end2end/playwright.config.js",
+		"test:e2eserver": "node ./test/end2end/server-koa.js"
 	},
 	"dependencies": {
 		"debug": "^4.3.7",
@@ -63,12 +64,9 @@
 		"negotiator": "^0.6.3"
 	},
 	"devDependencies": {
-		"@enterthenamehere/esdoc": "^2.6.0-dev.1",
-		"@enterthenamehere/esdoc-external-nodejs-plugin": "^2.6.0-dev.1",
-		"@enterthenamehere/esdoc-importpath-plugin": "^2.6.0-dev.1",
-		"@enterthenamehere/esdoc-standard-plugin": "^2.6.0-dev.2",
-		"@hotwired/turbo": "^8.0.6",
-		"@vividvisions/esdoc-api-doc-markdown-plugin": "file:../esdoc-api-doc-markdown-plugin",
+		"@hotwired/turbo": "^8.0.10",
+		"@koa/bodyparser": "^5.1.1",
+		"@playwright/test": "^1.48.0",
 		"c8": "^10.1.2",
 		"chai": "^5.1.1",
 		"chai-spies": "^1.1.0",
