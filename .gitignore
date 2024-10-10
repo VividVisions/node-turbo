@@ -4,3 +4,5 @@
 /docs/internal
 /package-lock.json
 /test/coverage
+/test/end2end/static/turbo.es2017-esm.js
+/test/end2end/test-results
