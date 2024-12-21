@@ -2,7 +2,7 @@
 import { expect } from '../chai.js';
 import request from 'supertest';
 import Koa from 'koa';
-import EventSource from 'eventsource';
+import { EventSource } from 'eventsource';
 import { TurboStream } from '#core';
 import { SseTurboStream } from '#sse';
 import { PassThrough } from 'node:stream';
