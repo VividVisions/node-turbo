@@ -55,10 +55,10 @@ node-turbo has been tested with 100% code coverage with the following engines/li
 
 | Name | Version(s) |
 | :--- | :--- |
-| [Node.js](https://nodejs.org/) | 16.6 - 21.5.0 |
-| [Hotwire Turbo](https://turbo.hotwired.dev/) | 7.3.0 - 8.0.10 |
+| [Node.js](https://nodejs.org/) | 16.6 - 22.12.0 |
+| [Hotwire Turbo](https://turbo.hotwired.dev/) | 7.3.0 - 8.0.12 |
 | [Koa](https://koajs.com/) | 2.14.2 - 2.15.3 |
-| [Express](https://expressjs.com/) | 4.18.2 - 4.21.1 |
+| [Express](https://expressjs.com/) | 4.18.2 - 4.21.2 |
 | [ws](https://github.com/websockets/ws) | 8.15.1 -  8.18.0 |
 
 ## API docs
@@ -529,7 +529,7 @@ const httpServer = http.createServer((req, res) => {
       padding: 10px;
     }
     </style>
-    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.4/dist/turbo.es2017-esm.js"></script>
+    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.12/dist/turbo.es2017-esm.js"></script>
     <script>
       var eventSource = new EventSource('/sse');
       eventSource.onmessage = function(event) {
@@ -616,7 +616,7 @@ app.use(async (ctx, next) => {
       padding: 10px;
     }
     </style>
-    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.4/dist/turbo.es2017-esm.js"></script>
+    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.12/dist/turbo.es2017-esm.js"></script>
     <script>
       var eventSource = new EventSource('/sse');
       eventSource.onmessage = function(event) {
@@ -693,7 +693,7 @@ app.get('/', async (req, res) => {
       padding: 10px;
     }
     </style>
-    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.4/dist/turbo.es2017-esm.js"></script>
+    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.12/dist/turbo.es2017-esm.js"></script>
     <script>
       var eventSource = new EventSource('/sse');
       eventSource.onmessage = function(event) {
