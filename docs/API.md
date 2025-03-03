@@ -1050,4 +1050,4 @@ Gets thrown when invalid attributes are discovered.
 
 ***
 
-node-turbo is © 2024 by Walter Krivanek and released under the [MIT license](https://mit-license.org).
+node-turbo is © 2024-2025 by Walter Krivanek and released under the [MIT license](https://mit-license.org).
