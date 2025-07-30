@@ -55,11 +55,11 @@ node-turbo has been tested with 100% code coverage with the following engines/li
 
 | Name | Version(s) |
 | :--- | :--- |
-| [Node.js](https://nodejs.org/) | 16.6 - 22.14.0 |
 | [Hotwire Turbo](https://turbo.hotwired.dev/) | 7.3.0 - 8.0.13 |
-| [Koa](https://koajs.com/) | 2.14.2 - 2.16.0 |
-| [Express](https://expressjs.com/) | 4.18.2 - 4.21.2 |
-| [ws](https://github.com/websockets/ws) | 8.15.1 -  8.18.1 |
+| [Node.js](https://nodejs.org/) | 16.6 - 22.17.1 |
+| [Koa](https://koajs.com/) | 2.14.2 - 3.0.1 |
+| [Express](https://expressjs.com/) | 4.18.2 - 5.1.0 |
+| [ws](https://github.com/websockets/ws) | 8.15.1 -  8.18.3 |
 
 ## API docs
 See [`/docs/API.md`](./docs/API.md) for a documentation of all node-turbo classes and functions.
