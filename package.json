@@ -64,7 +64,7 @@
 		"negotiator": "^1.0.0"
 	},
 	"devDependencies": {
-		"@hotwired/turbo": "^8.0.13",
+		"@hotwired/turbo": "^8.0.18",
 		"@koa/bodyparser": "^6.0.0",
 		"@playwright/test": "^1.55.1",
 		"c8": "^10.1.3",
