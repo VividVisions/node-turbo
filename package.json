@@ -59,7 +59,7 @@
 		"test:e2eserver": "node ./test/end2end/server-koa.js"
 	},
 	"dependencies": {
-		"debug": "^4.4.1",
+		"debug": "^4.4.3",
 		"is-plain-object": "^5.0.0",
 		"negotiator": "^1.0.0"
 	},
