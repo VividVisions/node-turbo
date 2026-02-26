@@ -1,7 +1,7 @@
 
 import { expect } from '../../chai.js';
-import { TurboStream, TurboElement, TurboStreamElement, TurboReadable } from '#core';
-import { Readable } from 'node:stream';
+import { TurboStream, TurboElement, TurboStreamElement } from '#core';
+import { Readable, PassThrough } from 'node:stream';
 
 const attr = {
 	action: 'a',
@@ -379,30 +379,100 @@ describe('TurboStream', function() {
 				expect(ts.elements[0].attributes.action).to.equal('morph');
 			});
 
+			it ('createReadableStream() warns about deprecation.', function() {
+				return new Promise(resolve => {
+					process.once('warning', err => {
+						expect(err).to.be.an('error');
+						expect(err.message).to.include('createReadableStream() is deprecated');
+						resolve();
+					});
+			
+					const ts = new TurboStream();
+					ts.createReadableStream();
+				});
+			});
+			
 		});
 	});
 
 	
-	describe('createReadableStream(opts)', function() {
+	describe('createNodeStream(opts)', function() {
 
-		it('returns new TurboReadable() when opts.continuous = true', function() {
-			const ts = new TurboStream();
-			const readable = ts.createReadableStream();
-			expect(readable).to.be.an.instanceof(TurboReadable);
+		describe('opts.continuous = true', function() {
+			
+			it('returns PassThrough stream', function() {
+				const ts = new TurboStream();
+				const readable = ts.createNodeStream();
+				expect(readable).to.be.an.instanceof(PassThrough);
+			});
+			
 		});
+		
+		
+		describe('opts.continuous = false', function() {
+			
+			it('returns new Readable()', function() {
+				const ts = new TurboStream();
+				const readable = ts.createNodeStream({ continuous: false });
+				expect(readable).not.to.be.an.instanceof(PassThrough);
+				expect(readable).to.be.an.instanceof(Readable);
+				readable.destroy();
+			});
+			
+			it('emits event \'element\' for existing Turbo Stream elements', function() {
+				return new Promise(resolve => {
+					const ts = new TurboStream().append('t', 'c');
 
-		it('returns new Readable() when opts.continuous = false', function() {
-			const ts = new TurboStream().append('t', 'c');
-			const readable = ts.createReadableStream({ continuous: false });
-			expect(readable).not.to.be.an.instanceof(TurboReadable);
-			expect(readable).to.be.an.instanceof(Readable);
-		});
-
-		it('returns new Readable() when opts.continuous = false even if empty', function() {
-			const ts = new TurboStream();
-			const readable = ts.createReadableStream({ continuous: false });
-			expect(readable).not.to.be.an.instanceof(TurboReadable);
-			expect(readable).to.be.an.instanceof(Readable);
+					ts.on('element', (el) => {
+						expect(el).to.be.an.instanceof(TurboStreamElement);
+						
+						resolve();
+					});
+					
+					const readable = ts.createNodeStream();
+					readable.destroy();
+				});
+			});
+			
+			it('Readable stream includes previously added elements (rendered)', function() {
+				const ts = new TurboStream()
+					.append('t', 'c')
+					.append('t2', 'c2');
+					
+				const readable = ts.createNodeStream({ continuous: false });
+				readable.setEncoding('utf8');
+				readable.pause();
+				
+				let 
+					el = '',
+					str = '';
+			
+				while ((el = readable.read()) !== null) {
+					str += el;
+				}
+				
+				readable.destroy();
+				expect(str).to.equal('<turbo-stream action="append" target="t"><template>c</template></turbo-stream><turbo-stream action="append" target="t2"><template>c2</template></turbo-stream>');
+			});
+			
+			it('returns new Readable(), even if empty', function() {
+				const ts = new TurboStream();
+				const readable = ts.createNodeStream({ continuous: false });
+				expect(readable).not.to.be.an.instanceof(PassThrough);
+				expect(readable).to.be.an.instanceof(Readable);
+				readable.destroy();
+			});
+			
+			it('Readable stream is empty, if TurboStream is empty', function() {
+				const ts = new TurboStream();
+					
+				const readable = ts.createNodeStream({ continuous: false });
+				readable.setEncoding('utf8');
+				readable.pause();
+				expect(readable.read()).to.be.null;
+				readable.destroy();
+			});
+			
 		});
 
 	});
