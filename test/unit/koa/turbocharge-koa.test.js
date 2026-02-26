@@ -15,7 +15,8 @@ describe('turbochargeKoa()', function() {
 				req: {
 					headers: {
 						'turbo-frame': 'id'
-					}
+					},
+					on: function() {}
 				}
 			}
 		};

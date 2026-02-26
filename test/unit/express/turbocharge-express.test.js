@@ -15,7 +15,8 @@ describe('turbochargeExpress()', function() {
 				req: {
 					headers: {
 						'turbo-frame': 'id'
-					}
+					},
+					on: function() {}
 				},
 				send: function(content) {
 					this.output = content;
