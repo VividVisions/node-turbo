@@ -4,13 +4,14 @@ import route from 'koa-route';
 import serve from 'koa-static';
 import bodyParser from '@koa/bodyparser';
 import { turbochargeKoa } from '#koa';
-import { SseTurboStream } from '#sse';
 
 const app = new Koa();
 let ssets;
 
-app.on('error', (err, ctx) => {
-	console.error('Error in Koa:', err);
+app.on('error', (err) => {
+	if (err?.code !== 'ERR_STREAM_PREMATURE_CLOSE') {
+		console.error('Error in Koa:', err);
+	}
 });
 
 // Add node-turbo functions to Koa context.
