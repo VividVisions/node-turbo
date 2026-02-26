@@ -1,6 +1,6 @@
 # node-turbo API documentation
 
-Version 1.2.7
+Version 1.3.0
 
 ## Table of Contents
 
@@ -26,7 +26,7 @@ Version 1.2.7
       - [turbostream.flush()](#turbostreamflush)
       - [turbostream.custom(action, target, content)](#turbostreamcustomaction-target-content)
       - [turbostream.customAll(action, targets, content)](#turbostreamcustomallaction-targets-content)
-      - [turbostream.createReadableStream(opts, opts.continuous, streamOptions)](#turbostreamcreatereadablestreamopts-optscontinuous-streamoptions)
+      - [turbostream.createNodeStream(opts, streamOptions)](#turbostreamcreatenodestreamopts-streamoptions)
       - [turbostream.append(targetOrAttributes, content)](#turbostreamappendtargetorattributes-content)
       - [turbostream.appendAll(targetsOrAttributes, content)](#turbostreamappendalltargetsorattributes-content)
       - [turbostream.prepend(targetOrAttributes, content)](#turbostreamprependtargetorattributes-content)
@@ -54,7 +54,7 @@ Version 1.2.7
       - [turboelement.renderAttributesAsHtml()](#turboelementrenderattributesashtml)
       - [turboelement.validate()](#turboelementvalidate)
       - [turboelement.render()](#turboelementrender)
-   - [Class: TurboReadable](#class-turboreadable)
+   - [Class: TurboReadable (deprecated)](#class-turboreadable)
       - [new TurboReadable(turboStream[, opts])](#new-turboreadableturbostream-opts)
       - [turboreadable._turboStream](#turboreadable_turbostream)
       - [turboreadable._boundPush](#turboreadable_boundpush)
@@ -92,7 +92,7 @@ Version 1.2.7
       - [sseturbostream.eventName](#sseturbostreameventname)
       - [sseturbostream.render()](#sseturbostreamrender)
       - [sseturbostream.renderSseEvent(raw)](#sseturbostreamrendersseeventraw)
-      - [sseturbostream.createReadableStream()](#sseturbostreamcreatereadablestream)
+      - [sseturbostream.createNodeStream()](#sseturbostreamcreatenodestream)
       - [sseturbostream.event(eventName)](#sseturbostreameventeventname)
 - [node-turbo/errors](#node-turboerrors)
    - [Class: ValidationError](#class-validationerror)
@@ -271,16 +271,16 @@ Adds a Turbo Stream Element with a custom action, targeting multiple DOM element
 
 Returns: {TurboStream} The instance for chaining.
 
-#### turbostream.createReadableStream(opts, opts.continuous, streamOptions)
+#### turbostream.createNodeStream(opts, streamOptions)
 
 - `opts` {Object<String, String>} The options for stream creation.
-- `opts.continuous` {Boolean} If true, a TurboReadable instance is returned. 
- If false, a readable stream created from the buffered items is returned.
+- `opts.continuous` {Boolean} If true, a {node:stream~PassThrough} instance is returned. 
+ If false, a {node:stream~Readable} created from the buffered items is returned.
 - `streamOptions` {Object<String, String>} The options for the readable stream itself.
 
-Creates a readable stream.
+Creates either a {node:stream~Readable} or {node:stream~PassThrough} stream instance.
 
-Returns: {stream.Readable | TurboReadable} Either a readable stream or a TurboReadable instance.
+Returns: {node:stream~Readable | {node:stream~PassThrough}} Either a readable stream or a TurboReadable instance.
 
 #### turbostream.append(targetOrAttributes, content)
 
@@ -510,6 +510,9 @@ Render function to implement.
 
 ### Class: TurboReadable
 
+> [!WARNING]
+> Deprecated since v1.3.0!
+
 ```javascript
 import { TurboReadable } from 'node-turbo';
 ```
@@ -688,7 +691,7 @@ Adds the element to the buffer, if config.buffer === true.
 Fires the event 'element' with the added element.
 > - clear()  
 Clears the buffer.
-> - createReadableStream(opts, opts.continuous, streamOptions)  
+> - createNodeStream(opts, streamOptions)  
 Creates a readable stream.
 > - custom(action, target, content)  
 Adds a Turbo Stream Element with a custom action.
@@ -752,7 +755,7 @@ Adds the element to the buffer, if config.buffer === true.
 Fires the event 'element' with the added element.
 > - clear()  
 Clears the buffer.
-> - createReadableStream(opts, opts.continuous, streamOptions)  
+> - createNodeStream(opts, streamOptions)  
 Creates a readable stream.
 > - custom(action, target, content)  
 Adds a Turbo Stream Element with a custom action.
@@ -851,7 +854,7 @@ Adds the element to the buffer, if config.buffer === true.
 Fires the event 'element' with the added element.
 > - clear()  
 Clears the buffer.
-> - createReadableStream(opts, opts.continuous, streamOptions)  
+> - createNodeStream(opts, streamOptions)  
 Creates a readable stream.
 > - custom(action, target, content)  
 Adds a Turbo Stream Element with a custom action.
@@ -942,15 +945,15 @@ Returns: {String | null} The rendered SSE or null if there were no elements in t
 
 - `raw` {String} The raw HTML string.
 
-Takes a HTML fragment string and converts it to an SSE event message.
+Takes an HTML fragment string and converts it to an SSE event message.
 
 Returns: {String | null} The converted SSE event message or null if no string has been passed.
 
-#### sseturbostream.createReadableStream()
+#### sseturbostream.createNodeStream()
 
-Creates a {TurboReadable} instance, which pipes to a {node:stream~Transform} to add SSE specific syntax.
+Creates a {node:stream~PassThrough} instance, which passes Turbo Stream elements through as SSE messages.
 
-Returns: {node:stream.Transform} The Transform stream instance.
+Returns: {node:stream~PassThrough} The PassThrough stream instance.
 
 #### sseturbostream.event(eventName)
 
@@ -1050,4 +1053,4 @@ Gets thrown when invalid attributes are discovered.
 
 ***
 
-node-turbo is © 2024-2025 by Walter Krivanek and released under the [MIT license](https://mit-license.org).
+node-turbo is © 2024-2026 by Walter Krivanek and released under the [MIT license](https://mit-license.org).

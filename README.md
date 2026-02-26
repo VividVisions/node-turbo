@@ -55,11 +55,11 @@ node-turbo has been tested with 100% code coverage with the following engines/li
 
 | Name | Version(s) |
 | :--- | :--- |
-| [Hotwire Turbo](https://turbo.hotwired.dev/) | 7.3.0 - 8.0.20 |
+| [Hotwire Turbo](https://turbo.hotwired.dev/) | 7.3.0 - 8.0.23 |
 | [Node.js](https://nodejs.org/) | 16.6 - 22.20.0 |
-| [Koa](https://koajs.com/) | 2.14.2 - 3.0.3 |
-| [Express](https://expressjs.com/) | 4.18.2 - 5.1.0 |
-| [ws](https://github.com/websockets/ws) | 8.15.1 -  8.18.3 |
+| [Koa](https://koajs.com/) | 2.14.2 - 3.1.2 |
+| [Express](https://expressjs.com/) | 4.18.2 - 5.2.1 |
+| [ws](https://github.com/websockets/ws) | 8.15.1 -  8.19.0 |
 
 ## API docs
 See [`/docs/API.md`](./docs/API.md) for a documentation of all node-turbo classes and functions.
@@ -216,15 +216,15 @@ Result:
 
 ##### Using the Node.js streams API
 If you want to use the [Node.js streams API](https://nodejs.org/docs/latest/api/stream.html) with Turbo Streams, you can 
-create a Readable stream instance which reads Turbo Stream messages.
+create a `PassThrough` stream instance which reads Turbo Stream messages.
 
 ```javascript
 import { TurboStream } from 'node-turbo';
 
 const ts = new TurboStream();
-const readable = ts.createReadableStream();
+const nStream = ts.createNodeStream();
 
-readable.pipe(process.stdout);
+nStream.pipe(process.stdout);
 
 // These elements get piped immediately:
 ts
@@ -459,9 +459,9 @@ const wss = new WebSocketServer({ port: 8080 });
 
 wss.on('connection', function connection(ws) {
   const ts = new TurboStream();
-  const readable = ts.createReadableStream();
+  const nStream = ts.createNodeStream();
   const wsStream = createWebSocketStream(ws, { encoding: 'utf8' });
-  readable.pipe(wsStream);
+  nStream.pipe(wsStream);
 
   ts
     .append('target-id', '<p>My content</p>')
@@ -508,8 +508,8 @@ const httpServer = http.createServer((req, res) => {
 
     // You can also use the streams API.
     setTimeout(() => {    
-      const stream = ssets.createReadableStream();
-      stream.pipe(res); 
+      const nStream = ssets.createNodeStream();
+      nStream.pipe(res); 
       ssets.prependAll('.stream', '<p>Prepend!</p>');
     }, 2000);
 
@@ -529,7 +529,7 @@ const httpServer = http.createServer((req, res) => {
       padding: 10px;
     }
     </style>
-    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.20/dist/turbo.es2017-esm.js"></script>
+    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.23/dist/turbo.es2017-esm.js"></script>
     <script>
       var eventSource = new EventSource('/sse');
       eventSource.onmessage = function(event) {
@@ -616,7 +616,7 @@ app.use(async (ctx, next) => {
       padding: 10px;
     }
     </style>
-    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.20/dist/turbo.es2017-esm.js"></script>
+    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.23/dist/turbo.es2017-esm.js"></script>
     <script>
       var eventSource = new EventSource('/sse');
       eventSource.onmessage = function(event) {
@@ -693,7 +693,7 @@ app.get('/', async (req, res) => {
       padding: 10px;
     }
     </style>
-    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.20/dist/turbo.es2017-esm.js"></script>
+    <script type="module" src="https://unpkg.com/@hotwired/turbo@8.0.23/dist/turbo.es2017-esm.js"></script>
     <script>
       var eventSource = new EventSource('/sse');
       eventSource.onmessage = function(event) {
@@ -720,4 +720,4 @@ app.listen(config.port);
 ```
 ## License
  
-node-turbo is © 2024-2025 Walter Krivanek and released under the [MIT license](https://mit-license.org).
+node-turbo is © 2024-2026 Walter Krivanek and released under the [MIT license](https://mit-license.org).
