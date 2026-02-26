@@ -1,20 +1,17 @@
 
 import { expect, spy } from '../../chai.js';
-import { TurboStream, TurboElement, TurboStreamElement, TurboReadable } from '#core';
-import { Readable } from 'node:stream';
+import { TurboStream, TurboStreamElement, TurboReadable } from '#core';
 
-const attr = {
-	action: 'a',
-	target: 't'
-};
-
-describe('TurboReadable', function() {
+describe('TurboReadable (deprecated)', function() {
 
 	before(function() { 
 		this.ts = new TurboStream()
 		this.readable = new TurboReadable(this.ts);
 	});
 
+	after(function() { 
+		this.readable.destroy();
+	});
 
 	beforeEach(function() {
 		spy.on(this.readable, 'push');
@@ -68,11 +65,11 @@ describe('TurboReadable', function() {
 	});
 
 
-	it('_destroy() gets called when steam is destroyed', function() {
-		const readable = this.ts.createReadableStream();
+	it('_destroy() gets called when stream is destroyed', function() {
+		const readable = new TurboReadable(new TurboStream());
+			
 		spy.on(readable, '_destroy');
 		readable.destroy();
-
 		expect(readable._destroy).to.have.been.called();
 		spy.restore(readable, '_destroy');
 	});
