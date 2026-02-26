@@ -33,7 +33,7 @@ describe('SSE integration', function() {
 				'Connection': 'keep-alive',
 			});
 
-			this.readable = this.sseTurboStream.createReadableStream();
+			this.readable = this.sseTurboStream.createNodeStream();
 
 			ctx.type = SseTurboStream.MIME_TYPE;
 			ctx.status = 200;

@@ -60,10 +60,18 @@ describe('SseTurboStream', function() {
 	});
 
 
-	it('createReadableStream() returns Transform', function() {
+	it('createNodeStream() returns Transform', function() {
 		const sseSt = new SseTurboStream();
-		const readable = sseSt.createReadableStream();
+		const readable = sseSt.createNodeStream();
 
+		expect(readable).to.be.an.instanceof(Transform);
+	});
+	
+	
+	it('createReadableStream() (deprecated) returns Transform', function() {
+		const sseSt = new SseTurboStream();
+
+		const readable = sseSt.createReadableStream();	
 		expect(readable).to.be.an.instanceof(Transform);
 	});
 
@@ -71,7 +79,7 @@ describe('SseTurboStream', function() {
 	it('SSE message gets written to stream', function() {
 		return new Promise((resolve, reject) => {
 			const sseSt = new SseTurboStream();
-			const readable = sseSt.createReadableStream();
+			const readable = sseSt.createNodeStream();
 
 			readable.on('data', chunk => {
 				expect(chunk.toString()).to.equal('data: <turbo-stream action="append" target="t"><template>c</template></turbo-stream>\n\n');
@@ -91,7 +99,7 @@ describe('SseTurboStream', function() {
 	it('SSE message with event name gets written to stream', function() {
 		return new Promise((resolve, reject) => {
 			const sseSt = new SseTurboStream('my-event');
-			const readable = sseSt.createReadableStream();
+			const readable = sseSt.createNodeStream();
 
 			readable.on('data', chunk => {
 				expect(chunk.toString()).to.equal('event: my-event\ndata: <turbo-stream action="append" target="t"><template>c</template></turbo-stream>\n\n');

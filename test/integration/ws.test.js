@@ -1,6 +1,5 @@
 
 import { expect } from '../chai.js';
-import request from 'supertest';
 import { TurboStream } from '#core';
 import { WsTurboStream } from '#ws';
 import { WebSocketServer, WebSocket, createWebSocketStream } from 'ws';
@@ -113,7 +112,7 @@ describe('WebSocket integration', function() {
 			const messages = [];
 
 			// We're expecting one message with two elements.
-			ws.on('message', (data, isBinary) => {
+			ws.on('message', (data) => {
 				messages.push(data.toString());
 				if (messages.length === 2) {
 					expect(messages[0]).to.equal('<turbo-stream action="append" target="t1"><template>c1</template></turbo-stream>');
@@ -127,7 +126,7 @@ describe('WebSocket integration', function() {
 			ws.once('open', () => {
 				this.wss.clients.forEach(ws => {
 					const ts = new TurboStream();
-					const readable = ts.createReadableStream();
+					const readable = ts.createNodeStream();
 
 					readable.on('error', err => {
 						return reject(err);
